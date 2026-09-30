@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="/*CSP*/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Free PDF page splitter. Everything runs in your browser. Your files are never uploaded.">
+<title>PDF Splitter</title>
+<style>
+  :root { --bg:#14161b; --card:#1d2027; --line:#2c303a; --fg:#e8eaf0; --mut:#8b91a1; --acc:#ff8fb1; --acc2:#7ee0c3; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,"Noto Sans Thai",sans-serif; }
+  header { padding:14px 20px; border-bottom:1px solid var(--line); display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  h1 { font-size:18px; margin:0; }
+  main { padding:20px; max-width:1400px; margin:auto; }
+  a { color:var(--acc2); }
+  #drop { border:2px dashed var(--line); border-radius:14px; padding:60px 20px; text-align:center; color:var(--mut); cursor:pointer; transition:.15s; }
+  #drop.over, #drop:hover { border-color:var(--acc); color:var(--fg); background:#1a1c22; }
+  button { background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:7px 12px; cursor:pointer; font:inherit; }
+  button:hover { border-color:var(--acc); }
+  button.primary { background:var(--acc); color:#25131a; border-color:var(--acc); font-weight:600; }
+  button.alt { background:var(--acc2); color:#0e2a22; border-color:var(--acc2); font-weight:600; }
+  button:disabled { opacity:.4; cursor:not-allowed; }
+  .tools { background:var(--bg); z-index:5; margin-bottom:14px; }
+  @media (min-width:700px) { .tools { position:sticky; top:0; } }
+  .bar { padding:10px 0 12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; border-bottom:1px solid var(--line); }
+  .bar input[type=text] { background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:7px 10px; width:200px; font:inherit; }
+  .sp { flex:1; }
+  #grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+  .pg { position:relative; background:var(--card); border:2px solid var(--line); border-radius:10px; padding:8px; cursor:pointer; user-select:none; transition:.1s; }
+  .pg:hover { border-color:#555b6b; }
+  .pg.sel { border-color:var(--acc); background:#2a1f26; }
+  .pg canvas { width:100%; height:auto; display:block; border-radius:4px; background:#fff; }
+  .pg .n { text-align:center; color:var(--mut); font-size:13px; margin-top:6px; }
+  .pg.sel .n { color:var(--acc); font-weight:600; }
+  .pg .ck { position:absolute; top:12px; right:12px; width:22px; height:22px; border-radius:50%; background:rgba(0,0,0,.55); border:2px solid #fff; display:grid; place-items:center; font-size:13px; color:transparent; }
+  .pg.sel .ck { background:var(--acc); border-color:var(--acc); color:#25131a; }
+  .hint { color:var(--mut); font-size:13px; }
+  #msg { color:var(--acc2); font-size:13px; }
+  .hide { display:none !important; }
+  .privacy { border:1px solid #2f5d4e; background:#15231f; border-radius:12px; padding:12px 16px; margin-bottom:18px; }
+  .privacy b { color:var(--acc2); }
+  .privacy details { margin-top:6px; color:var(--mut); font-size:13px; }
+  .privacy summary { cursor:pointer; color:var(--fg); }
+  .privacy ul { margin:6px 0 0; padding-left:20px; }
+  footer { margin:36px 0 10px; color:var(--mut); font-size:12px; text-align:center; }
+  #lang { margin-left:auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>✂️ PDF Splitter</h1>
+  <span class="hint" data-i18n="tagline"></span>
+  <button id="lang" title="Language / ภาษา">EN</button>
+</header>
+<main>
+  <section class="privacy" id="privacy">
+    <div>🔒 <b data-i18n="priv_head"></b> <span data-i18n="priv_body"></span></div>
+    <div class="hint" id="privCounter" style="margin-top:4px"></div>
+    <details>
+      <summary data-i18n="priv_verify_title"></summary>
+      <ul>
+        <li data-i18n="priv_v1"></li>
+        <li data-i18n="priv_v2"></li>
+        <li data-i18n="priv_v3"></li>
+        <li><a id="srcLink" href="/*REPO_URL*/" target="_blank" rel="noopener" data-i18n="priv_v4"></a></li>
+      </ul>
+    </details>
+  </section>
+
+  <div id="drop"><span data-i18n="drop"></span><input id="file" type="file" accept="application/pdf" class="hide"></div>
+
+  <div id="work" class="hide">
+    <div class="tools">
+    <div class="bar">
+      <b id="fname"></b><span class="hint" id="count"></span>
+      <span class="sp"></span>
+      <button id="bAll" data-i18n="all"></button>
+      <button id="bNone" data-i18n="none"></button>
+      <button id="bInv" data-i18n="inv"></button>
+      <button id="bOdd" data-i18n="odd"></button>
+      <button id="bEven" data-i18n="even"></button>
+      <input id="range" type="text" data-i18n-ph="range_ph">
+    </div>
+    <div class="bar">
+      <span id="selInfo" class="hint"></span>
+      <span class="sp"></span>
+      <span id="msg"></span>
+      <button id="bExtract" class="primary" disabled data-i18n="extract"></button>
+      <button id="bEach" class="alt" disabled data-i18n="each"></button>
+      <button id="bDelete" disabled data-i18n="del"></button>
+      <button id="bOther" data-i18n="other"></button>
+    </div>
+    </div>
+    <div class="hint" style="margin-bottom:10px" data-i18n="howto"></div>
+    <div id="grid"></div>
+  </div>
+  <footer><span data-i18n="foot"></span></footer>
+</main>
+
+<script>/*PDFLIB*/</script>
+<script>/*PDFJS*/</script>
+<script id="workersrc" type="text/plain">/*WORKER*/</script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const HAS_COUNTER = /*HAS_COUNTER*/;
+
+  // ---------- i18n ----------
+  const I18N = {
+    th: {
+      tagline: 'ตัดหน้า PDF ฟรี ทำงานในเครื่องคุณทั้งหมด',
+      priv_head: 'ไฟล์ของคุณไม่ออกจากเครื่อง',
+      priv_body: 'ทุกอย่างประมวลผลในเบราว์เซอร์ของคุณเท่านั้น ไม่มีการอัปโหลด ไม่มีเซิร์ฟเวอร์รับไฟล์ และไม่เก็บข้อมูลจากไฟล์ของคุณเด็ดขาด',
+      priv_counter: 'สิ่งเดียวที่นับคือจำนวนผู้เข้าชมหน้านี้แบบไม่ระบุตัวตน (GoatCounter: ไม่ใช้ cookie ไม่เก็บ IP เต็ม ไม่เห็นชื่อไฟล์หรือเนื้อหาไฟล์) และจะไม่นับถ้าเบราว์เซอร์ของคุณเปิด Do Not Track',
+      priv_nocounter: 'หน้านี้ไม่มีการติดตามผู้ใช้ใด ๆ ทั้งสิ้น',
+      priv_verify_title: 'ตรวจสอบเองได้อย่างไร',
+      priv_v1: 'เปิด DevTools (F12) แท็บ Network แล้วลองตัดไฟล์ จะไม่มี request ใดส่งข้อมูลไฟล์ออกไป',
+      priv_v2: 'หน้านี้ตั้ง Content-Security-Policy ให้เบราว์เซอร์บล็อกการเชื่อมต่อออกนอกเครื่องเอง (ดูได้ใน view-source)',
+      priv_v3: 'บันทึกหน้านี้เป็นไฟล์ .html แล้วปิดอินเทอร์เน็ต ก็ยังใช้งานได้ตามปกติ',
+      priv_v4: 'ดูซอร์สโค้ดทั้งหมดบน GitHub',
+      drop: 'ลากไฟล์ PDF มาวางตรงนี้ หรือคลิกเพื่อเลือกไฟล์',
+      all: 'เลือกทั้งหมด', none: 'ล้าง', inv: 'กลับด้าน', odd: 'คี่', even: 'คู่',
+      range_ph: 'เช่น 1-3, 5, 8-10',
+      extract: 'ตัดหน้าที่เลือกเป็น 1 ไฟล์', each: 'แยกทีละหน้า (หลายไฟล์)', del: 'ลบหน้าที่เลือกทิ้ง', other: 'เปลี่ยนไฟล์',
+      howto: 'คลิกที่หน้าเพื่อเลือก · Shift+คลิก เลือกเป็นช่วง · พิมพ์ช่วงหน้าในช่องด้านบนได้',
+      foot: 'ใช้ pdf-lib (MIT) และ PDF.js (Apache-2.0) · ซอฟต์แวร์ให้ใช้ตามสภาพ ไม่มีการรับประกัน',
+      pages: n => `${n} หน้า`, page: n => `หน้า ${n}`,
+      none_sel: 'ยังไม่ได้เลือกหน้า', sel_info: (n, t) => `เลือกแล้ว ${n} จาก ${t} หน้า`,
+      loading: 'กำลังโหลดตัวอย่างหน้า...', not_pdf: 'ต้องเป็นไฟล์ PDF นะคะ', open_fail: m => `เปิดไฟล์ไม่ได้: ${m}`,
+      err: m => `ผิดพลาด: ${m}`, done_pages: n => `เสร็จแล้ว ${n} หน้า`, done_left: n => `เสร็จแล้ว เหลือ ${n} หน้า`, done_files: n => `เสร็จแล้ว ${n} ไฟล์`,
+      confirm_many: n => `จะดาวน์โหลด ${n} ไฟล์ต่อเนื่องกัน ถ้าเบราว์เซอร์ถามให้กดอนุญาต ตกลงมั้ยคะ?`
+    },
+    en: {
+      tagline: 'Free PDF page splitter. Runs entirely on your device.',
+      priv_head: 'Your files never leave your device.',
+      priv_body: 'Everything is processed inside your own browser. No upload, no server that receives files, and nothing from your files is ever stored.',
+      priv_counter: 'The only thing counted is the number of visitors to this page, anonymously (GoatCounter: no cookies, no full IP stored, it never sees file names or contents). Nothing is counted if your browser sends Do Not Track.',
+      priv_nocounter: 'This page does not track its users in any way.',
+      priv_verify_title: 'How to verify this yourself',
+      priv_v1: 'Open DevTools (F12), go to the Network tab, then split a file. No request carries your file data anywhere.',
+      priv_v2: 'The page sets a Content-Security-Policy so the browser itself blocks outbound connections (see view-source).',
+      priv_v3: 'Save this page as an .html file, go offline, and it still works.',
+      priv_v4: 'Read the full source code on GitHub',
+      drop: 'Drop a PDF here, or click to choose a file',
+      all: 'Select all', none: 'Clear', inv: 'Invert', odd: 'Odd', even: 'Even',
+      range_ph: 'e.g. 1-3, 5, 8-10',
+      extract: 'Extract selected into 1 file', each: 'Split into one file per page', del: 'Delete selected pages', other: 'Change file',
+      howto: 'Click a page to select · Shift+click selects a range · or type a page range above',
+      foot: 'Built with pdf-lib (MIT) and PDF.js (Apache-2.0) · Provided as is, without warranty',
+      pages: n => `${n} pages`, page: n => `Page ${n}`,
+      none_sel: 'No pages selected', sel_info: (n, t) => `${n} of ${t} pages selected`,
+      loading: 'Loading page previews...', not_pdf: 'Please choose a PDF file.', open_fail: m => `Could not open file: ${m}`,
+      err: m => `Error: ${m}`, done_pages: n => `Done, ${n} pages`, done_left: n => `Done, ${n} pages remain`, done_files: n => `Done, ${n} files`,
+      confirm_many: n => `This will download ${n} files in a row. If the browser asks, allow multiple downloads. Continue?`
+    }
+  };
+  const qLang = new URLSearchParams(location.search).get('lang');
+  let lang = (qLang === 'en' || qLang === 'th') ? qLang : ((navigator.language || 'th').toLowerCase().startsWith('th') ? 'th' : 'en');
+  const t = (k, ...a) => { const v = I18N[lang][k]; return typeof v === 'function' ? v(...a) : v; };
+
+  let bytes = null, baseName = 'document', total = 0, sel = new Set(), last = null, cells = [];
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(e => e.textContent = t(e.dataset.i18n));
+    document.querySelectorAll('[data-i18n-ph]').forEach(e => e.placeholder = t(e.dataset.i18nPh));
+    $('privCounter').textContent = t(HAS_COUNTER ? 'priv_counter' : 'priv_nocounter');
+    $('lang').textContent = lang === 'th' ? 'EN' : 'ไทย';
+    if (total) { $('count').textContent = t('pages', total); cells.forEach((c, i) => c && (c.querySelector('.n').textContent = t('page', i))); }
+    refresh(false);
+  }
+  $('lang').onclick = () => { lang = lang === 'th' ? 'en' : 'th'; applyLang(); };
+
+  // ---------- pdf.js worker (from inline blob, no network) ----------
+  const wblob = new Blob([$('workersrc').textContent], {type: 'text/javascript'});
+  pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(wblob);
+
+  const drop = $('drop'), fileIn = $('file');
+  drop.onclick = () => fileIn.click();
+  fileIn.onchange = () => fileIn.files[0] && load(fileIn.files[0]);
+  ['dragenter','dragover'].forEach(e => document.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(e => document.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('over'); }));
+  document.addEventListener('drop', ev => { const f = ev.dataTransfer.files[0]; if (f) load(f); });
+  $('bOther').onclick = () => { $('work').classList.add('hide'); drop.classList.remove('hide'); fileIn.value=''; bytes = null; total = 0; flash(''); };
+
+  async function load(f) {
+    if (f.type !== 'application/pdf' && !f.name.toLowerCase().endsWith('.pdf')) return flash(t('not_pdf'));
+    bytes = new Uint8Array(await f.arrayBuffer());
+    baseName = f.name.replace(/\.pdf$/i, '');
+    sel.clear(); last = null; $('grid').innerHTML = ''; cells = []; total = 0;
+    drop.classList.add('hide'); $('work').classList.remove('hide');
+    $('fname').textContent = f.name;
+    flash(t('loading'));
+    let doc;
+    try { doc = await pdfjsLib.getDocument({data: bytes.slice()}).promise; }
+    catch (e) { flash(t('open_fail', e.message)); return; }
+    total = doc.numPages;
+    $('count').textContent = t('pages', total);
+    for (let i = 1; i <= total; i++) {
+      const d = document.createElement('div'); d.className = 'pg';
+      d.innerHTML = '<div class="ck">✓</div><canvas></canvas><div class="n"></div>';
+      d.querySelector('.n').textContent = t('page', i);
+      d.onclick = ev => click(i, ev.shiftKey);
+      $('grid').appendChild(d); cells[i] = d;
+    }
+    refresh(true);
+    for (let i = 1; i <= total; i++) {
+      const page = await doc.getPage(i);
+      const vp = page.getViewport({scale: 0.4});
+      const c = cells[i].querySelector('canvas');
+      c.width = vp.width; c.height = vp.height;
+      await page.render({canvasContext: c.getContext('2d'), viewport: vp}).promise;
+    }
+    flash('');
+  }
+
+  function click(i, shift) {
+    if (shift && last) {
+      const [a, b] = [Math.min(last, i), Math.max(last, i)];
+      const on = !sel.has(i);
+      for (let k = a; k <= b; k++) on ? sel.add(k) : sel.delete(k);
+    } else { sel.has(i) ? sel.delete(i) : sel.add(i); }
+    last = i; refresh(true);
+  }
+
+  function toRange(set) {
+    const a = [...set].sort((x, y) => x - y), out = [];
+    for (let i = 0; i < a.length; ) {
+      let j = i; while (j + 1 < a.length && a[j+1] === a[j] + 1) j++;
+      out.push(j > i ? `${a[i]}-${a[j]}` : `${a[i]}`); i = j + 1;
+    }
+    return out.join(', ');
+  }
+  function parseRange(s) {
+    const set = new Set();
+    for (const part of s.split(/[,\s]+/).filter(Boolean)) {
+      const m = part.match(/^(\d+)(?:-(\d+))?$/); if (!m) continue;
+      let a = +m[1], b = m[2] ? +m[2] : a; if (a > b) [a, b] = [b, a];
+      for (let k = Math.max(1, a); k <= Math.min(total, b); k++) set.add(k);
+    }
+    return set;
+  }
+  function refresh(syncInput) {
+    cells.forEach((c, i) => c && c.classList.toggle('sel', sel.has(i)));
+    if (syncInput) $('range').value = toRange(sel);
+    const n = sel.size;
+    $('selInfo').textContent = n ? t('sel_info', n, total) : t('none_sel');
+    $('bExtract').disabled = !n; $('bEach').disabled = !n; $('bDelete').disabled = !n || n === total;
+  }
+  $('range').oninput = () => { sel = parseRange($('range').value); refresh(false); };
+  const allPages = () => Array.from({length: total}, (_, k) => k + 1);
+  $('bAll').onclick = () => { sel = new Set(allPages()); refresh(true); };
+  $('bNone').onclick = () => { sel.clear(); refresh(true); };
+  $('bInv').onclick = () => { sel = new Set(allPages().filter(k => !sel.has(k))); refresh(true); };
+  $('bOdd').onclick = () => { sel = new Set(allPages().filter(k => k % 2)); refresh(true); };
+  $('bEven').onclick = () => { sel = new Set(allPages().filter(k => !(k % 2))); refresh(true); };
+
+  function flash(m) { $('msg').textContent = m; }
+  function save(u8, name) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([u8], {type: 'application/pdf'}));
+    a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }
+  async function build(pages) {
+    const src = await PDFLib.PDFDocument.load(bytes, {ignoreEncryption: true});
+    const out = await PDFLib.PDFDocument.create();
+    const copied = await out.copyPages(src, pages.map(p => p - 1));
+    copied.forEach(p => out.addPage(p));
+    return out.save();
+  }
+  const sorted = () => [...sel].sort((a, b) => a - b);
+  async function run(fn) { try { await fn(); } catch (e) { flash(t('err', e.message)); console.error(e); } }
+
+  $('bExtract').onclick = () => run(async () => {
+    const p = sorted(); save(await build(p), `${baseName}_p${toRange(sel).replace(/, /g, '_')}.pdf`); flash(t('done_pages', p.length));
+  });
+  $('bDelete').onclick = () => run(async () => {
+    const keep = allPages().filter(k => !sel.has(k));
+    save(await build(keep), `${baseName}_removed.pdf`); flash(t('done_left', keep.length));
+  });
+  $('bEach').onclick = () => run(async () => {
+    const p = sorted();
+    if (p.length > 10 && !confirm(t('confirm_many', p.length))) return;
+    for (const n of p) { save(await build([n]), `${baseName}_page${String(n).padStart(3, '0')}.pdf`); await new Promise(r => setTimeout(r, 250)); }
+    flash(t('done_files', p.length));
+  });
+
+  applyLang();
+
+  // ---------- optional anonymous visit counter (build-time switch) ----------
+  /*COUNTER*/
+})();
+</script>
+</body>
+</html>
