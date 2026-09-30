@@ -382,6 +382,13 @@
   $('lang').onclick = () => { lang = lang === 'th' ? 'en' : 'th'; applyLang(); };
 
   // ---------- pdf.js worker (from inline blob, no network) ----------
+  // file:// pages have an opaque origin, so a blob: Worker cannot start there. In that case the worker
+  // code (already inlined in this file) is run as an inline script, which PDF.js then uses in-thread.
+  if (location.protocol === 'file:') {
+    const ws = document.createElement('script');
+    ws.textContent = $('workersrc').textContent;
+    document.head.appendChild(ws);
+  }
   const wblob = new Blob([$('workersrc').textContent], {type: 'text/javascript'});
   pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(wblob);
 
