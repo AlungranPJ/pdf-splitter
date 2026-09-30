@@ -14,7 +14,7 @@ Cut pages out of a PDF in seconds. Your file never leaves your device.
 
 <br>
 
-<img src="docs/screenshots/desktop-th-select.jpg" alt="PDF Splitter หน้าต่างสไตล์ Windows 7 Frutiger Aero แสดงภาพย่อของหน้า PDF พร้อมเลือกไว้ 5 หน้า" width="900">
+<img src="docs/screenshots/desktop-th-select.jpg" alt="PDF Splitter หน้าตา Modern Clay ค่าเริ่มต้น แสดงภาพย่อของหน้า PDF พร้อมเลือกไว้ 5 หน้า สีเด่นส้ม" width="900">
 
 </div>
 
@@ -35,7 +35,7 @@ PDF Splitter ทำงานทั้งหมดในแท็บเบรา�
 | **ตัวช่วยเลือก** | เลือกทั้งหมด, ล้าง, กลับด้าน, หน้าคี่, หน้าคู่ |
 | **ไทยและอังกฤษ** | ตรวจภาษาจากเบราว์เซอร์อัตโนมัติ สลับได้ด้วยปุ่ม หรือบังคับด้วย `?lang=th` / `?lang=en` |
 | **ไฟล์ใช้ออฟไลน์** | ปุ่ม **ดาวน์โหลดไปใช้ออฟไลน์** (มุมซ้ายล่าง) ให้ไฟล์ HTML ไฟล์เดียวที่ไม่มีตัวนับผู้เข้าชมและบล็อกการเชื่อมต่อเน็ตทุกชนิด เก็บไว้บนเดสก์ท็อปแล้วใช้ตอนปิดอินเทอร์เน็ตได้ |
-| **หน้าตา 3 แบบ** | ค่าเริ่มต้นเป็น Windows 7 Frutiger Aero กดปุ่มย่อของหน้าต่างจะเป็นหน้า terminal (TUI) พื้นดำตัวอักษรเขียว กดปุ่มขยายจะเป็นเดสก์ท็อป Ubuntu 22.04 "Jammy Jellyfish" กดซ้ำเพื่อกลับ ฟีเจอร์เหมือนกันทุกแบบ |
+| **หน้าตา 4 แบบ** | ค่าเริ่มต้นคือ **Modern Clay** (พื้นผิวสีขาวนุ่ม สีเด่นส้ม เงาแบบดินนวล) ปุ่มธีมข้างปุ่มภาษาจะสลับเป็น **Windows 7 Frutiger Aero** กดปุ่มย่อของหน้าต่างจะเป็นหน้า terminal (TUI) พื้นดำตัวอักษรเขียว กดปุ่มขยายจะเป็นเดสก์ท็อป Ubuntu 22.04 "Jammy Jellyfish" กดซ้ำเพื่อกลับ Clay ฟีเจอร์เหมือนกันทั้งสี่แบบ |
 | **ใช้คีย์บอร์ดได้** | ภาพย่อโฟกัสได้: `Tab` เลื่อน, `Space` หรือ `Enter` เลือก/ยกเลิก |
 | **รองรับมือถือ** | จัดเลย์เอาต์สำหรับจอคอมและจอมือถือ |
 
@@ -50,14 +50,22 @@ PDF Splitter ทำงานทั้งหมดในแท็บเบรา�
     <td align="center"><sub>หน้าเริ่มต้น: วางไฟล์ PDF หรือกดเลือกไฟล์</sub></td>
     <td align="center"><sub>ส่วนติดต่อผู้ใช้ภาษาไทย</sub></td>
   </tr>
+</table>
+
+<table>
   <tr>
-    <td width="50%"><img src="docs/screenshots/desktop-ubuntu-select.jpg" alt="หน้าตา Ubuntu 22.04 พร้อมวอลเปเปอร์แมงกระพรุน"></td>
-    <td width="50%"><img src="docs/screenshots/desktop-tui-select.jpg" alt="หน้าตา terminal พื้นดำตัวอักษรเขียว"></td>
+    <td width="33%"><img src="docs/screenshots/desktop-aero-select.jpg" alt="หน้าตา Windows 7 Frutiger Aero"></td>
+    <td width="33%"><img src="docs/screenshots/desktop-ubuntu-select.jpg" alt="หน้าตา Ubuntu 22.04 พร้อมวอลเปเปอร์แมงกระพรุน"></td>
+    <td width="33%"><img src="docs/screenshots/desktop-tui-select.jpg" alt="หน้าตา terminal พื้นดำตัวอักษรเขียว"></td>
   </tr>
   <tr>
+    <td align="center"><sub>ปุ่มธีม: Windows 7 Frutiger Aero</sub></td>
     <td align="center"><sub>ปุ่มขยาย: หน้าตา Ubuntu 22.04</sub></td>
     <td align="center"><sub>ปุ่มย่อ: หน้าตา terminal (TUI)</sub></td>
   </tr>
+</table>
+
+<table>
   <tr>
     <td width="50%"><img src="docs/screenshots/desktop-en-privacy.jpg" alt="กล่องความเป็นส่วนตัวที่กางรายการตรวจสอบออก"></td>
     <td width="50%" align="center"><img src="docs/screenshots/mobile-en-select.jpg" alt="เลย์เอาต์มือถือ" width="240"></td>

@@ -15,7 +15,7 @@
 
 <br>
 
-<img src="docs/screenshots/desktop-en-select.jpg" alt="PDF Splitter: a Windows 7 Frutiger Aero window showing page thumbnails with five pages selected" width="900">
+<img src="docs/screenshots/desktop-en-select.jpg" alt="PDF Splitter in the default Modern Clay look: page thumbnails with five pages selected, orange accent" width="900">
 
 </div>
 
@@ -36,7 +36,7 @@ PDF Splitter does the whole job inside your browser tab. There is no upload step
 | **Quick selectors** | Select all, clear, invert, odd pages, even pages. |
 | **Thai and English** | Auto-detected from the browser, one-click toggle, or force it with `?lang=th` / `?lang=en`. |
 | **Offline copy** | The **Download offline copy** button (bottom-left) gives you one self-contained HTML file with no visit counter and every network connection blocked. Keep it on your desktop and use it with the internet off. |
-| **Three looks** | Windows 7 Frutiger Aero by default. The window's minimize button switches to a green-on-black terminal (TUI) look, the maximize button to an Ubuntu 22.04 "Jammy Jellyfish" desktop. Press it again to go back. Same features in all three. |
+| **Four looks** | **Modern Clay** (soft white surfaces, orange accent, inflated clay shadows) is the default. The theme button next to the language button switches to **Windows 7 Frutiger Aero**. The window's minimize button switches to a green-on-black terminal (TUI) look, the maximize button to an Ubuntu 22.04 "Jammy Jellyfish" desktop. Press it again to return to Clay. Same features in all four. |
 | **Keyboard friendly** | Thumbnails are focusable checkboxes: `Tab` to move, `Space` or `Enter` to toggle. |
 | **Responsive** | Desktop and phone layouts. |
 
@@ -51,14 +51,22 @@ PDF Splitter does the whole job inside your browser tab. There is no upload step
     <td align="center"><sub>Start screen: drop a PDF or choose a file</sub></td>
     <td align="center"><sub>Thai interface (auto-detected)</sub></td>
   </tr>
+</table>
+
+<table>
   <tr>
-    <td width="50%"><img src="docs/screenshots/desktop-ubuntu-select.jpg" alt="Ubuntu 22.04 look with a jellyfish wallpaper"></td>
-    <td width="50%"><img src="docs/screenshots/desktop-tui-select.jpg" alt="Green-on-black terminal look"></td>
+    <td width="33%"><img src="docs/screenshots/desktop-aero-select.jpg" alt="Windows 7 Frutiger Aero look"></td>
+    <td width="33%"><img src="docs/screenshots/desktop-ubuntu-select.jpg" alt="Ubuntu 22.04 look with a jellyfish wallpaper"></td>
+    <td width="33%"><img src="docs/screenshots/desktop-tui-select.jpg" alt="Green-on-black terminal look"></td>
   </tr>
   <tr>
+    <td align="center"><sub>Theme button: Windows 7 Frutiger Aero</sub></td>
     <td align="center"><sub>Maximize button: Ubuntu 22.04 look</sub></td>
     <td align="center"><sub>Minimize button: terminal (TUI) look</sub></td>
   </tr>
+</table>
+
+<table>
   <tr>
     <td width="50%"><img src="docs/screenshots/desktop-en-privacy.jpg" alt="Privacy notice with the how-to-verify list expanded"></td>
     <td width="50%" align="center"><img src="docs/screenshots/mobile-en-select.jpg" alt="Phone layout" width="240"></td>
@@ -138,7 +146,7 @@ pdf-splitter/
 ├── docs/screenshots/      images used in this README
 ├── .github/workflows/     GitHub Pages deployment
 ├── PRODUCT.md             who it is for and what must stay true
-└── DESIGN.md              the Windows 7 Frutiger Aero visual system
+└── DESIGN.md              the original Windows 7 Frutiger Aero visual system (now the opt-in look; Modern Clay is the default)
 ```
 
 ## Known limits
@@ -149,6 +157,6 @@ pdf-splitter/
 
 ## Credits and license
 
-Built with [pdf-lib](https://github.com/Hopding/pdf-lib) (MIT) and [PDF.js](https://github.com/mozilla/pdf.js) (Apache-2.0). The look is inspired by Windows 7 and Frutiger Aero; all artwork is drawn in inline SVG and CSS.
+Built with [pdf-lib](https://github.com/Hopding/pdf-lib) (MIT) and [PDF.js](https://github.com/mozilla/pdf.js) (Apache-2.0). The default look is a white-and-orange claymorphism style, with Windows 7 Frutiger Aero, Ubuntu 22.04 and a terminal look as alternatives; all artwork is drawn in inline SVG and CSS.
 
 Released under the [MIT License](LICENSE). Provided as is, without warranty.

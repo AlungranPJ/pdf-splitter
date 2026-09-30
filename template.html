@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="/*HTMLLANG*/">
+<html lang="/*HTMLLANG*/" data-theme="clay">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="/*CSP*/">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#3a9be0">
+<meta name="theme-color" content="#f6f2ed">
 <!--HEADTAGS-->
 <style>
   :root {
@@ -390,6 +390,183 @@
   }
 
 
+
+  /* ===================== Theme: Modern Clay (white + orange), opt-in via the Clay button ===================== */
+  .scene-cl { display:none; }
+  .langbar .tb { width:18px; height:18px; flex:none; }
+  html[data-theme="clay"] {
+    --ink:#2a1e16; --ink2:#6a5b50; --edge:rgba(120,80,40,.16);
+    --accent:#ff7a1a; --accent-hi:#ffb36b; --accent-ink:#b84200; --accent-deep:#8a3200;
+    --cream:#fbf6f0; --well:#f6efe7; --line:#f1e8de;
+    --font:ui-rounded,"SF Pro Rounded","Segoe UI Variable Text","Segoe UI","Leelawadee UI","Noto Sans Thai",system-ui,sans-serif;
+    --ease:cubic-bezier(.16,1,.3,1);
+    --sh-raise:inset 2px 3px 5px rgba(255,255,255,.95), inset -3px -5px 9px rgba(190,140,95,.18), 3px 7px 14px rgba(150,105,60,.18), 1px 2px 3px rgba(150,105,60,.14);
+    --sh-raise-hi:inset 2px 3px 5px #fff, inset -3px -5px 9px rgba(190,140,95,.16), 5px 12px 22px rgba(150,105,60,.22), 1px 3px 5px rgba(150,105,60,.14);
+    --sh-press:inset 4px 5px 10px rgba(160,110,65,.28), inset -2px -3px 6px rgba(255,255,255,.85);
+    --sh-well:inset 3px 4px 9px rgba(160,110,65,.17), inset -3px -4px 8px rgba(255,255,255,.95);
+    --sh-orange:inset 2px 3px 5px rgba(255,255,255,.55), inset -3px -5px 9px rgba(185,65,0,.35), 4px 9px 18px rgba(235,100,10,.32), 1px 2px 3px rgba(185,65,0,.25);
+    --sh-orange-hi:inset 2px 3px 5px rgba(255,255,255,.6), inset -3px -5px 9px rgba(185,65,0,.3), 6px 14px 24px rgba(235,100,10,.38), 1px 3px 5px rgba(185,65,0,.25);
+    --sh-orange-press:inset 4px 5px 10px rgba(160,55,0,.45), inset -2px -3px 6px rgba(255,190,130,.4);
+    --sh-card:inset 4px 6px 12px #fff, inset -6px -8px 18px rgba(190,150,110,.10), 16px 26px 56px rgba(150,105,60,.20), 3px 5px 10px rgba(150,105,60,.10);
+    background:#f6f2ed; scrollbar-color:#ffb36b #f6f2ed;
+  }
+  html[data-theme="clay"] body { font-variant-numeric:tabular-nums; }
+  html[data-theme="clay"] ::selection { background:#ff7a1a; color:#2a1408; }
+  html[data-theme="clay"] input { caret-color:#ff7a1a; }
+  html[data-theme="clay"] a { color:var(--accent-ink); text-underline-offset:3px; }
+  html[data-theme="clay"] :is(button,input,summary,.pg):focus-visible { outline:3px solid var(--accent); outline-offset:3px; box-shadow:var(--fs, none); }
+  html[data-theme="clay"] .scene { display:none; }
+
+  /* soft clay props behind the window (static: motion is reserved for state changes) */
+  html[data-theme="clay"] .scene-cl { display:block; position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; }
+  .scene-cl .cb { position:absolute; display:block; }
+  .scene-cl .cb1 { width:clamp(150px,17vw,250px); aspect-ratio:1; left:calc(-1 * clamp(36px,4.5vw,80px)); top:40%; border-radius:50%;
+    background:radial-gradient(circle at 34% 28%, #ffdcbb 0 9%, #ffb068 34%, #ff7a1a 66%, #e86200 100%);
+    box-shadow:inset -14px -18px 30px rgba(170,60,0,.34), inset 10px 12px 22px rgba(255,255,255,.45), 22px 34px 50px rgba(200,100,30,.26); }
+  .scene-cl .cb2 { width:clamp(200px,24vw,340px); height:clamp(82px,9.5vw,136px); right:calc(-1 * clamp(40px,5vw,90px)); top:10%; border-radius:999px; rotate:-22deg;
+    background:linear-gradient(145deg,#fff,#f3ebe2);
+    box-shadow:inset 8px 10px 16px #fff, inset -10px -12px 22px rgba(190,150,110,.25), 20px 30px 50px rgba(150,105,60,.20); }
+  .scene-cl .cb3 { width:clamp(86px,9vw,132px); height:clamp(190px,21vw,300px); right:5vw; bottom:-6%; border-radius:999px; rotate:24deg;
+    background:linear-gradient(145deg,#ffd2a3,#ffa152 70%,#ff8e33);
+    box-shadow:inset 7px 9px 14px rgba(255,255,255,.55), inset -9px -12px 20px rgba(200,80,0,.28), 18px 28px 44px rgba(200,100,30,.24); }
+  .scene-cl .cb4 { width:clamp(54px,5.5vw,84px); aspect-ratio:1; left:7vw; top:9%; border-radius:50%;
+    background:radial-gradient(circle at 34% 28%, #fff 0 12%, #f6eee5 60%, #eadccd 100%);
+    box-shadow:inset -6px -8px 14px rgba(190,150,110,.28), 10px 16px 26px rgba(150,105,60,.2); }
+  @media (max-width:899px) { .scene-cl .cb2, .scene-cl .cb3 { display:none; } .scene-cl .cb1 { opacity:.9; } }
+
+  /* window */
+  html[data-theme="clay"] .win { max-width:1040px; margin:30px auto 100px; padding:0; border:0; border-radius:40px; background:#fff;
+    -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:var(--sh-card); }
+  html[data-theme="clay"] .titlebar { height:68px; gap:14px; padding:0 20px 0 22px; border-radius:40px 40px 0 0; }
+  html[data-theme="clay"] .titlebar svg.appico { display:none; }
+  html[data-theme="clay"] .titlebar::before { content:"PDF"; display:grid; place-items:center; width:42px; height:42px; flex:none; border-radius:15px;
+    font-size:11.5px; font-weight:800; letter-spacing:.2px; color:#2a1408; background:linear-gradient(145deg,#ffc089,#ff7a1a); box-shadow:var(--sh-orange); }
+  html[data-theme="clay"] h1 { font-size:19px; font-weight:800; letter-spacing:-.01em; color:var(--ink); text-shadow:none; }
+  html[data-theme="clay"] .caps { align-self:center; margin:0; gap:10px; }
+  html[data-theme="clay"] .caps button { width:38px; height:38px; min-height:0; margin:0; padding:0; border:0; border-radius:50%; color:var(--ink);
+    background:linear-gradient(145deg,#fff,#f4ede5); box-shadow:var(--sh-raise); --fs:var(--sh-raise);
+    transition:transform .18s var(--ease), box-shadow .18s var(--ease); }
+  html[data-theme="clay"] .caps button::after { content:none; }
+  html[data-theme="clay"] .caps .ia, html[data-theme="clay"] .caps .it { display:none; }
+  html[data-theme="clay"] .caps .iu { display:block; width:17px; height:17px; }
+  html[data-theme="clay"] .caps .c3 { color:#2a1408; background:linear-gradient(145deg,#ffb36b,#ff7a1a); box-shadow:var(--sh-orange); --fs:var(--sh-orange); }
+  html[data-theme="clay"] .caps button:hover:not(:disabled) { transform:translateY(-2px); background:linear-gradient(145deg,#fff,#fbf4ec); box-shadow:var(--sh-raise-hi); }
+  html[data-theme="clay"] .caps .c3:hover:not(:disabled) { background:linear-gradient(145deg,#ffc089,#ff8a33); box-shadow:var(--sh-orange-hi); }
+  html[data-theme="clay"] .caps button:active:not(:disabled) { transform:translateY(1px); box-shadow:var(--sh-press); }
+  html[data-theme="clay"] .caps .c3:active:not(:disabled) { box-shadow:var(--sh-orange-press); }
+
+  /* address row: tagline well + the two selector buttons */
+  html[data-theme="clay"] .addr { gap:12px; padding:2px 22px 16px; }
+  html[data-theme="clay"] .abar { padding:11px 18px; border:0; border-radius:22px; background:var(--well); box-shadow:var(--sh-well); }
+  html[data-theme="clay"] .abar svg { display:none; }
+  html[data-theme="clay"] .abar .hint { color:var(--ink2); font-size:14px; }
+  html[data-theme="clay"] .client { background:transparent; border:0; border-radius:0 0 40px 40px; box-shadow:none; }
+
+  /* buttons */
+  html[data-theme="clay"] button { min-height:44px; padding:8px 20px; border:0; border-radius:18px; color:var(--ink); font-weight:600; text-shadow:none;
+    background:linear-gradient(145deg,#fff,#f5eee6); box-shadow:var(--sh-raise); --fs:var(--sh-raise);
+    transition:transform .18s var(--ease), box-shadow .18s var(--ease), background .18s ease; }
+  html[data-theme="clay"] button:hover:not(:disabled) { transform:translateY(-2px); border:0; background:linear-gradient(145deg,#fff,#fbf4ec); box-shadow:var(--sh-raise-hi); }
+  html[data-theme="clay"] button:active:not(:disabled) { transform:translateY(1px); border:0; background:linear-gradient(145deg,#f7f0e8,#f3ebe2); box-shadow:var(--sh-press); }
+  html[data-theme="clay"] button:disabled, html[data-theme="clay"] button.primary:disabled, html[data-theme="clay"] button.alt:disabled {
+    cursor:not-allowed; transform:none; color:#9a8b7e; text-shadow:none; background:#f1ebe4; box-shadow:inset 2px 2px 5px rgba(160,110,65,.12), inset -2px -2px 4px rgba(255,255,255,.8); }
+  html[data-theme="clay"] button.primary { color:#2a1408; font-weight:800; background:linear-gradient(145deg,#ffb36b,#ff7a1a 60%,#ff6d0a); box-shadow:var(--sh-orange); --fs:var(--sh-orange); }
+  html[data-theme="clay"] button.primary:hover:not(:disabled) { background:linear-gradient(145deg,#ffc089,#ff8a33 60%,#ff7a1a); box-shadow:var(--sh-orange-hi); }
+  html[data-theme="clay"] button.primary:active:not(:disabled) { background:linear-gradient(145deg,#ff8a33,#ff6d0a); box-shadow:var(--sh-orange-press); }
+  html[data-theme="clay"] button.alt { color:var(--accent-deep); font-weight:700; background:linear-gradient(145deg,#fff4e8,#ffe0c2); box-shadow:var(--sh-raise); }
+  html[data-theme="clay"] button.alt:hover:not(:disabled) { background:linear-gradient(145deg,#fff8f0,#ffe7cf); box-shadow:var(--sh-raise-hi); }
+  html[data-theme="clay"] button.alt:active:not(:disabled) { background:linear-gradient(145deg,#ffe3c8,#ffd7b0); box-shadow:var(--sh-press); }
+  html[data-theme="clay"] button.big { min-height:56px; padding:12px 36px; border-radius:22px; font-size:17px; }
+  html[data-theme="clay"] .langbar { gap:8px; padding:8px 16px 8px 13px; color:var(--ink); }
+  html[data-theme="clay"] .langbar .kb { filter:grayscale(1) contrast(.9); }
+  html[data-theme="clay"] .langbar .lcode { font-size:13.5px; letter-spacing:.4px; }
+
+  /* privacy notice: warm cream pillow, shield tinted orange */
+  html[data-theme="clay"] .privacy { gap:4px 14px; margin:6px 22px 20px; padding:18px 22px; color:var(--ink); border:0; border-radius:28px;
+    background:linear-gradient(145deg,#fffaf4,#fff0df); box-shadow:var(--sh-raise); }
+  html[data-theme="clay"] .privacy > svg { width:42px; height:42px; filter:hue-rotate(-78deg) saturate(1.2) drop-shadow(0 3px 4px rgba(200,90,0,.35)); }
+  html[data-theme="clay"] .privacy b { color:var(--accent-deep); }
+  html[data-theme="clay"] .privacy .hint, html[data-theme="clay"] .privacy details { color:var(--ink2); }
+  html[data-theme="clay"] .privacy summary { color:var(--accent-deep); font-weight:700; }
+
+  /* drop zone: a pressed-in well with a dashed ring */
+  html[data-theme="clay"] #drop { margin:0 22px 28px; padding:40px 22px 44px; border:0; border-radius:32px; outline:2px dashed #f2b27a; outline-offset:-15px;
+    background:var(--well); box-shadow:var(--sh-well); transition:background .18s ease, outline-color .18s ease; }
+  html[data-theme="clay"] #drop.over { background:#fff1e3; outline-color:var(--accent); box-shadow:var(--sh-well); }
+  html[data-theme="clay"] #drop .big-ico { width:112px; height:112px; filter:hue-rotate(-8deg) saturate(.95) drop-shadow(10px 16px 14px rgba(150,105,60,.3)); }
+  html[data-theme="clay"] #drop p { color:var(--ink2); font-size:16px; }
+
+  /* command bar */
+  html[data-theme="clay"] .tools { background:#fff; border-top:0; border-bottom:1px solid var(--line); box-shadow:0 12px 20px -16px rgba(150,105,60,.45); }
+  html[data-theme="clay"] .bar { gap:10px; padding:14px 22px; }
+  html[data-theme="clay"] .bar + .bar { border-top:1px solid var(--line); }
+  html[data-theme="clay"] .bar b { color:var(--ink); }
+  html[data-theme="clay"] .bar input[type=text] { width:220px; min-height:44px; padding:8px 18px; border:0; border-radius:18px; color:var(--ink); background:var(--well);
+    box-shadow:var(--sh-well); --fs:var(--sh-well); }
+  html[data-theme="clay"] .bar input[type=text]:focus { border:0; box-shadow:var(--sh-well); }
+  html[data-theme="clay"] #msg { color:var(--accent-ink); }
+  html[data-theme="clay"] .hint { color:var(--ink2); }
+  html[data-theme="clay"] .howto { padding:14px 22px 4px; }
+
+  /* thumbnails: soft tiles, selected = orange-ringed and warm */
+  html[data-theme="clay"] #grid { gap:14px; padding:12px 22px 28px; }
+  html[data-theme="clay"] .pg { --pgs:none; --fs:var(--pgs); padding:12px 12px 10px; border:0; border-radius:24px; box-shadow:var(--pgs);
+    transition:transform .18s var(--ease), background .18s ease, box-shadow .18s var(--ease); }
+  html[data-theme="clay"] .pg:hover { --pgs:var(--sh-raise); background:#fffaf5; border:0; transform:translateY(-2px); }
+  html[data-theme="clay"] .pg.sel { --pgs:inset 0 0 0 3px var(--accent), 4px 9px 16px rgba(235,100,10,.22); background:linear-gradient(145deg,#fff5ea,#ffe6cd); border:0; }
+  html[data-theme="clay"] .pg canvas { border:0; border-radius:14px; background:#fff; box-shadow:0 7px 16px rgba(150,105,60,.28), 0 1px 3px rgba(150,105,60,.2); }
+  html[data-theme="clay"] .pg .n { color:var(--ink); margin-top:10px; }
+  html[data-theme="clay"] .pg.sel .n { color:var(--accent-deep); font-weight:700; }
+  html[data-theme="clay"] .pg .ck { top:19px; right:19px; filter:hue-rotate(176deg) saturate(1.15) drop-shadow(0 3px 4px rgba(170,70,0,.4)); }
+  html[data-theme="clay"] .status { margin-top:0; padding:16px 22px; color:var(--ink2); background:var(--cream); border-top:1px solid var(--line); border-radius:0 0 40px 40px; }
+
+  /* offline download button, about section, easter-egg tooltip */
+  html[data-theme="clay"] .dl { left:18px; bottom:18px; color:var(--ink); font-weight:700; border:0; border-radius:20px; background:linear-gradient(145deg,#fff,#f5eee6); box-shadow:var(--sh-raise);
+    transition:transform .18s var(--ease), box-shadow .18s var(--ease); }
+  html[data-theme="clay"] .dl:hover { transform:translateY(-2px); background:linear-gradient(145deg,#fff,#fbf4ec); border:0; box-shadow:var(--sh-raise-hi); }
+  html[data-theme="clay"] .dl:active { transform:translateY(1px); box-shadow:var(--sh-press); }
+  html[data-theme="clay"] .dl svg path:last-child { stroke:#e05a00; }
+  html[data-theme="clay"] .about { max-width:1040px; color:var(--ink); border:0; border-radius:32px; background:#fff; box-shadow:var(--sh-card); }
+  html[data-theme="clay"] .about a { color:var(--accent-ink); }
+  html[data-theme="clay"] .about code { color:var(--accent-deep); border:0; border-radius:8px; background:#fff0df; }
+  html[data-theme="clay"] .about details { border:0; border-radius:20px; background:var(--well); box-shadow:var(--sh-well); }
+  html[data-theme="clay"] .about summary { color:var(--ink); }
+  html[data-theme="clay"] .nojs { color:var(--ink); background:#fff; border:0; border-radius:20px; box-shadow:var(--sh-raise); }
+  html[data-theme="clay"] .oops-tip { color:var(--ink); border:0; border-radius:16px; background:#fff; box-shadow:var(--sh-raise-hi); }
+  html[data-theme="clay"] .oops-tip::before { background:#fff; border:0; }
+  html[data-theme="tui"] .themebtn .tlabel { display:inline; }
+
+  @media (max-width:699px) {
+    html[data-theme="clay"] .win { margin:10px 8px 96px; border-radius:30px; }
+    html[data-theme="clay"] .titlebar { height:60px; padding:0 14px 0 16px; border-radius:30px 30px 0 0; gap:10px; }
+    html[data-theme="clay"] .titlebar::before { width:38px; height:38px; border-radius:13px; font-size:10.5px; }
+    html[data-theme="clay"] h1 { font-size:17px; }
+    html[data-theme="clay"] .caps { gap:7px; }
+    html[data-theme="clay"] .caps button { width:36px; height:36px; }
+    html[data-theme="clay"] .addr { padding:0 14px 14px; flex-wrap:wrap; }
+    html[data-theme="clay"] .abar { flex:1 1 100%; }
+    html[data-theme="clay"] .privacy { margin:4px 14px 16px; padding:14px 16px; border-radius:24px; }
+    html[data-theme="clay"] #drop { margin:0 14px 22px; padding:28px 14px 32px; border-radius:26px; outline-offset:-11px; }
+    html[data-theme="clay"] #drop .big-clay { width:96px; height:96px; }
+    html[data-theme="clay"] .bar { padding:12px 14px; }
+    html[data-theme="clay"] .bar input[type=text] { flex:1 1 100%; width:auto; }
+    html[data-theme="clay"] button { min-height:44px; }
+    html[data-theme="clay"] .howto { padding:10px 14px 4px; }
+    html[data-theme="clay"] #grid { gap:8px; padding:8px 12px 20px; }
+    html[data-theme="clay"] .pg { padding:10px 10px 8px; border-radius:20px; }
+    html[data-theme="clay"] .status { border-radius:0 0 30px 30px; padding:14px 16px; }
+    html[data-theme="clay"] .client { border-radius:0 0 30px 30px; }
+    html[data-theme="clay"] .dl { left:12px; bottom:12px; min-height:44px; }
+    html[data-theme="clay"] .about { margin:0 8px 110px; padding:16px 16px 18px; border-radius:26px; }
+  }
+
+
+  .big-clay { display:none; }
+  html[data-theme="clay"] #drop .big-ico { display:none; }
+  html[data-theme="clay"] #drop .big-clay { display:block; width:124px; height:124px; margin:0 auto; filter:drop-shadow(10px 16px 14px rgba(150,105,60,.3)); }
+  .themebtn[data-to="aero"] .tb-clay, .themebtn[data-to="clay"] .tb-win { display:none; }
+  .themebtn .tlabel { font-weight:700; }
+
   /* ===================== About / FAQ (static, crawler-visible) ===================== */
   .about { max-width:860px; margin:0 auto 110px; padding:20px 24px 22px; color:var(--ink); font-size:14.5px; line-height:1.65;
     border:1px solid rgba(10,40,70,.45); border-radius:7px; background:rgba(255,255,255,.88);
@@ -575,6 +752,7 @@
     <ellipse cx="-58" cy="-92" rx="74" ry="34" fill="#fff" opacity=".2" transform="rotate(-24 -58 -92)"/>
   </g>
 </svg></div>
+<div class="scene-cl" aria-hidden="true"><i class="cb cb1"></i><i class="cb cb2"></i><i class="cb cb3"></i><i class="cb cb4"></i></div>
 <div class="ub-shell" aria-hidden="true">
   <div class="ub-panel">
     <div>Activities</div>
@@ -607,6 +785,7 @@
   </div>
   <div class="addr">
     <div class="abar"><svg aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg><span class="hint" data-i18n="tagline"></span></div>
+    <button id="bTheme" type="button" class="langbar themebtn" data-to="aero"><svg class="tb tb-clay" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><defs><radialGradient id="tbg" cx=".34" cy=".28" r=".8"><stop offset="0" stop-color="#ffdcbb"/><stop offset=".45" stop-color="#ffa152"/><stop offset="1" stop-color="#e86200"/></radialGradient></defs><circle cx="10" cy="10" r="8.5" fill="url(#tbg)" stroke="#b84200" stroke-width="1"/><ellipse cx="7.2" cy="6.4" rx="3" ry="1.8" fill="#fff" opacity=".55" transform="rotate(-28 7.2 6.4)"/></svg><svg class="tb tb-win" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M2 4.4l6.600-1v6.200H2zM9.400 3.200L18 2v7.600H9.400zM2 10.400h6.600v6.200L2 15.600zM9.400 10.400H18V18l-8.600-1.200z" fill="#2d84d6" stroke="#1c5fb0" stroke-width=".6" stroke-linejoin="round"/></svg><span class="tlabel"></span></button>
     <button id="lang" type="button" class="langbar" title="Language / ภาษา" aria-label="Language / ภาษา"><svg class="kb" viewBox="0 0 20 14" aria-hidden="true" focusable="false"><defs><linearGradient id="kbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7fafd"/><stop offset="1" stop-color="#9db5cf"/></linearGradient></defs><rect x=".5" y=".5" width="19" height="13" rx="2.200" fill="url(#kbg)" stroke="#4a6585"/><g fill="#33506f"><rect x="3" y="3" width="2" height="2"/><rect x="6" y="3" width="2" height="2"/><rect x="9" y="3" width="2" height="2"/><rect x="12" y="3" width="2" height="2"/><rect x="15" y="3" width="2" height="2"/><rect x="4.500" y="6.300" width="2" height="2"/><rect x="7.500" y="6.300" width="2" height="2"/><rect x="10.500" y="6.300" width="2" height="2"/><rect x="13.500" y="6.300" width="2" height="2"/><rect x="5" y="9.600" width="10" height="2"/></g></svg><span class="lcode" id="lcode">EN</span><svg class="dd" viewBox="0 0 8 5" aria-hidden="true" focusable="false"><path d="M0 0h8L4 5z" fill="currentColor"/></svg></button>
   </div>
 
@@ -628,6 +807,7 @@
 
   <div id="drop">
     <svg class="big-ico" aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg>
+    <svg class="big-clay" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><defs><linearGradient id="cg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efe5da"/></linearGradient><linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc089"/><stop offset=".6" stop-color="#ff7a1a"/><stop offset="1" stop-color="#f06400"/></linearGradient></defs><rect x="24" y="8" width="72" height="98" rx="18" fill="url(#cg1)"/><rect x="24" y="8" width="72" height="98" rx="18" fill="none" stroke="#fff" stroke-width="3" opacity=".9"/><path d="M72 8h6a18 18 0 0 1 18 18v6H80a8 8 0 0 1-8-8z" fill="#ffd9b8"/><rect x="38" y="44" width="44" height="6" rx="3" fill="#e6d9cb"/><rect x="38" y="58" width="30" height="6" rx="3" fill="#e6d9cb"/><rect x="10" y="68" width="76" height="34" rx="17" fill="url(#cg2)"/><ellipse cx="34" cy="75" rx="16" ry="4.500" fill="#fff" opacity=".45"/><text x="48" y="92.500" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="800" fill="#2a1408">PDF</text></svg>
     <pre class="ascii" aria-hidden="true">+----------+
 | %PDF-1.7 |
 | ######## |
@@ -694,7 +874,8 @@
       close: 'ปิด',
       dl: 'ดาวน์โหลดไปใช้ออฟไลน์',
       dl_tip: 'ไฟล์เดียว ไม่มีโค้ดนับผู้เข้าชม และบล็อกการเชื่อมต่อเน็ตทุกชนิด เปิดใช้ได้แม้ไม่ต่ออินเทอร์เน็ต',
-      m_tui: 'โหมดเทอร์มินัล (TUI)', m_ub: 'โหมด Ubuntu', m_back: 'กลับเป็นหน้าตา Windows 7',
+      clay_btn: 'Clay', m_clay: 'เปลี่ยนเป็นหน้าตา Clay (ขาวส้ม)', win_btn: 'Windows 7', m_win: 'เปลี่ยนเป็นหน้าตา Windows 7',
+      m_tui: 'โหมดเทอร์มินัล (TUI)', m_ub: 'โหมด Ubuntu', m_back: 'กลับหน้าตาเริ่มต้น (Clay)',
       priv_head: 'ไฟล์ของคุณไม่ออกจากเครื่อง',
       priv_body: 'ทุกอย่างประมวลผลในเบราว์เซอร์ของคุณเท่านั้น ไม่มีการอัปโหลด ไม่มีเซิร์ฟเวอร์รับไฟล์ และไม่เก็บข้อมูลจากไฟล์ของคุณเด็ดขาด',
       priv_counter: 'สิ่งเดียวที่นับคือจำนวนผู้เข้าชมหน้านี้แบบไม่ระบุตัวตน (GoatCounter: ไม่ใช้ cookie ไม่เก็บ IP เต็ม ไม่เห็นชื่อไฟล์หรือเนื้อหาไฟล์) และจะไม่นับถ้าเบราว์เซอร์ของคุณเปิด Do Not Track',
@@ -722,7 +903,8 @@
       close: 'Close',
       dl: 'Download offline copy',
       dl_tip: 'One file, no visit counter, every network connection blocked. Works with the internet switched off.',
-      m_tui: 'Terminal mode (TUI)', m_ub: 'Ubuntu mode', m_back: 'Back to the Windows 7 look',
+      clay_btn: 'Clay', m_clay: 'Switch to the Clay look (white and orange)', win_btn: 'Windows 7', m_win: 'Switch to the Windows 7 look',
+      m_tui: 'Terminal mode (TUI)', m_ub: 'Ubuntu mode', m_back: 'Back to the default Clay look',
       priv_head: 'Your files never leave your device.',
       priv_body: 'Everything is processed inside your own browser. No upload, no server that receives files, and nothing from your files is ever stored.',
       priv_counter: 'The only thing counted is the number of visitors to this page, anonymously (GoatCounter: no cookies, no full IP stored, it never sees file names or contents). Nothing is counted if your browser sends Do Not Track.',
@@ -768,18 +950,26 @@
     refresh(false);
   }
   $('lang').onclick = () => {
-    if (FIXED_LANG && SIBLING) { location.href = SIBLING + location.search.replace(/([?&])lang=[^&]*&?/, '$1').replace(/[?&]$/, '') + location.hash; return; }
+    if (FIXED_LANG && SIBLING) {
+      // /th/ and /en/ are separate pages: carry the chosen look over so switching language does not reset it
+      const p = new URLSearchParams(location.search); p.delete('lang'); p.delete('theme');
+      if (theme !== 'clay') p.set('theme', theme);
+      const q = p.toString(); location.href = SIBLING + (q ? '?' + q : '') + location.hash; return;
+    }
     lang = lang === 'th' ? 'en' : 'th'; applyLang();
   };
 
   // ---------- Themes: minimize = terminal (TUI), maximize = Ubuntu, press again to go back ----------
-  const themeColor = { aero: '#3a9be0', ubuntu: '#300a24', tui: '#000000' };
-  let theme = 'aero', clockTimer = 0;
+  const themeColor = { clay: '#f6f2ed', aero: '#3a9be0', ubuntu: '#300a24', tui: '#000000' };
+  let theme = 'clay', clockTimer = 0;
   function labelCaps() {
     const a = $('bMin'), b = $('bMax');
     const la = t(theme === 'tui' ? 'm_back' : 'm_tui'), lb = t(theme === 'ubuntu' ? 'm_back' : 'm_ub');
     a.title = la; a.setAttribute('aria-label', la); b.title = lb; b.setAttribute('aria-label', lb);
     a.setAttribute('aria-pressed', String(theme === 'tui')); b.setAttribute('aria-pressed', String(theme === 'ubuntu'));
+    const c = $('bTheme'), toAero = theme === 'clay', lc = t(toAero ? 'm_win' : 'm_clay');
+    c.title = lc; c.setAttribute('aria-label', lc); c.dataset.to = toAero ? 'aero' : 'clay';
+    c.querySelector('.tlabel').textContent = t(toAero ? 'win_btn' : 'clay_btn');
   }
   function tickClock() {
     clearTimeout(clockTimer);
@@ -789,13 +979,15 @@
     clockTimer = setTimeout(tickClock, 20000);
   }
   function setTheme(n) {
-    theme = themeColor[n] ? n : 'aero';
-    if (theme === 'aero') document.documentElement.removeAttribute('data-theme'); else document.documentElement.dataset.theme = theme;
+    theme = themeColor[n] ? n : 'clay';
+    document.documentElement.dataset.theme = theme;
     document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor[theme]);
     labelCaps(); tickClock();
   }
-  $('bMin').onclick = () => setTheme(theme === 'tui' ? 'aero' : 'tui');
-  $('bMax').onclick = () => setTheme(theme === 'ubuntu' ? 'aero' : 'ubuntu');
+  // Clay is the default look. The caption buttons toggle TUI / Ubuntu on and back to Clay; the theme button flips Clay <-> Windows 7.
+  $('bMin').onclick = () => setTheme(theme === 'tui' ? 'clay' : 'tui');
+  $('bMax').onclick = () => setTheme(theme === 'ubuntu' ? 'clay' : 'ubuntu');
+  $('bTheme').onclick = () => setTheme(theme === 'clay' ? 'aero' : 'clay');
   setTheme(new URLSearchParams(location.search).get('theme'));
 
 
