@@ -188,8 +188,9 @@
     .titlebar { height:32px; }
     h1 { font-size:14px; }
     .caps .c1, .caps .c2 { width:24px; } .caps .c3 { width:38px; }
-    .caps button.c3 { position:relative; }
-    .caps button.c3::after { content:""; position:absolute; inset:-8px -6px -16px -10px; }
+    .caps button::after { content:""; position:absolute; inset:-8px 0 -10px 0; }
+    .caps .c1::after { left:-4px; }
+    .caps .c3::after { right:-6px; }
     .privacy { margin:12px 10px; padding:10px; grid-template-columns:auto 1fr; }
     .privacy > svg { width:28px; height:28px; }
     #drop { margin:0 10px 14px; padding:22px 14px 26px; }
@@ -302,6 +303,8 @@
     html[data-theme="ubuntu"] .ub-dock { display:none; }
     html[data-theme="ubuntu"] .win { margin:10px 6px 60px; }
     html[data-theme="ubuntu"] .titlebar { height:44px; }
+    html[data-theme="ubuntu"] .caps { gap:6px; }
+    html[data-theme="ubuntu"] .caps button { width:34px; height:34px; }
     html[data-theme="ubuntu"] h1 { font-size:14px; }
   }
 
