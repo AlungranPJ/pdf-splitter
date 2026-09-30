@@ -16,7 +16,7 @@ META = {
         "noscript": "เครื่องมือนี้ต้องเปิด JavaScript ในเบราว์เซอร์ถึงจะตัดหน้า PDF ได้ ไฟล์ของคุณยังอยู่ในเครื่องเท่านั้น",
     },
     "en": {
-        "title": "Split PDF Pages Free: Private, in Your Browser, Works Offline | PDF Splitter",
+        "title": "Split PDF Pages Free, Private and Offline | PDF Splitter",
         "description": "Free PDF splitter that runs in your browser. Extract pages into a new file, split one page per file, or delete pages. Your PDF is never uploaded. Offline copy available.",
         "og_alt": "PDF Splitter: split PDF pages in your browser, files never leave your device",
         "locale": "en_US",
