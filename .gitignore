@@ -4,3 +4,8 @@ dl/
 *.pdf
 .impeccable/
 pdf-splitter-offline.html
+th/
+en/
+sitemap.xml
+robots.txt
+__pycache__/

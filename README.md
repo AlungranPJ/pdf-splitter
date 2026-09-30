@@ -104,7 +104,7 @@ Downloaded file names:
 
 ## Build from source
 
-`build.py` generates two single self-contained files from `template.html` and the libraries in `vendor/`: `index.html` (the hosted page) and `pdf-splitter-offline.html` (what the download button hands out). You need Python 3 and nothing else.
+`build.py` generates the single self-contained pages (plus `th/`, `en/`, `sitemap.xml`, `robots.txt`) from `template.html` and the libraries in `vendor/`: `index.html` (the hosted page) and `pdf-splitter-offline.html` (what the download button hands out). You need Python 3 and nothing else.
 
 ```bash
 git clone https://github.com/AlungranPJ/pdf-splitter.git
@@ -131,7 +131,9 @@ The included workflow (`.github/workflows/pages.yml`) builds and publishes to Gi
 ```
 pdf-splitter/
 ├── template.html          UI, styles and app logic (placeholders for build-time parts)
-├── build.py               inlines vendor libs, writes the CSP, optionally adds the counter, writes the offline copy
+├── build.py               inlines vendor libs, writes the CSP, optionally adds the counter, writes the offline copy, /th/ and /en/ pages, sitemap.xml and robots.txt
+├── seo.py                 titles, descriptions, hreflang, Open Graph, JSON-LD and the static about/FAQ text
+├── og-th.png, og-en.png   1200x630 link-preview images
 ├── vendor/                pdf-lib 1.17.1 and PDF.js 3.11.174 (+ their licenses)
 ├── docs/screenshots/      images used in this README
 ├── .github/workflows/     GitHub Pages deployment

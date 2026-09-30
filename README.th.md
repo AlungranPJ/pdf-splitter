@@ -103,7 +103,7 @@ PDF Splitter ทำงานทั้งหมดในแท็บเบรา�
 
 ## Build จากซอร์สโค้ด
 
-`build.py` สร้างไฟล์เดี่ยวที่พึ่งตัวเองได้ 2 ไฟล์จาก `template.html` และไลบรารีใน `vendor/` คือ `index.html` (หน้าเว็บจริง) กับ `pdf-splitter-offline.html` (ไฟล์ที่ปุ่มดาวน์โหลดแจก) ใช้แค่ Python 3
+`build.py` สร้างหน้าเว็บไฟล์เดี่ยวที่พึ่งตัวเองได้ (รวมหน้า `th/` `en/` กับ `sitemap.xml` และ `robots.txt`) จาก `template.html` และไลบรารีใน `vendor/` คือ `index.html` (หน้าเว็บจริง) กับ `pdf-splitter-offline.html` (ไฟล์ที่ปุ่มดาวน์โหลดแจก) ใช้แค่ Python 3
 
 ```bash
 git clone https://github.com/AlungranPJ/pdf-splitter.git
