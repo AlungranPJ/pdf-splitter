@@ -4,59 +4,260 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="/*CSP*/">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3a9be0">
 <meta name="description" content="Free PDF page splitter. Everything runs in your browser. Your files are never uploaded.">
 <title>PDF Splitter</title>
 <style>
-  :root { --bg:#14161b; --card:#1d2027; --line:#2c303a; --fg:#e8eaf0; --mut:#8b91a1; --acc:#ff8fb1; --acc2:#7ee0c3; }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,"Noto Sans Thai",sans-serif; }
-  header { padding:14px 20px; border-bottom:1px solid var(--line); display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-  h1 { font-size:18px; margin:0; }
-  main { padding:20px; max-width:1400px; margin:auto; }
-  a { color:var(--acc2); }
-  #drop { border:2px dashed var(--line); border-radius:14px; padding:60px 20px; text-align:center; color:var(--mut); cursor:pointer; transition:.15s; }
-  #drop.over, #drop:hover { border-color:var(--acc); color:var(--fg); background:#1a1c22; }
-  button { background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:7px 12px; cursor:pointer; font:inherit; }
-  button:hover { border-color:var(--acc); }
-  button.primary { background:var(--acc); color:#25131a; border-color:var(--acc); font-weight:600; }
-  button.alt { background:var(--acc2); color:#0e2a22; border-color:var(--acc2); font-weight:600; }
-  button:disabled { opacity:.4; cursor:not-allowed; }
-  .tools { background:var(--bg); z-index:5; margin-bottom:14px; }
-  @media (min-width:700px) { .tools { position:sticky; top:0; } }
-  .bar { padding:10px 0 12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; border-bottom:1px solid var(--line); }
-  .bar input[type=text] { background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:7px 10px; width:200px; font:inherit; }
-  .sp { flex:1; }
-  #grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
-  .pg { position:relative; background:var(--card); border:2px solid var(--line); border-radius:10px; padding:8px; cursor:pointer; user-select:none; transition:.1s; }
-  .pg:hover { border-color:#555b6b; }
-  .pg.sel { border-color:var(--acc); background:#2a1f26; }
-  .pg canvas { width:100%; height:auto; display:block; border-radius:4px; background:#fff; }
-  .pg .n { text-align:center; color:var(--mut); font-size:13px; margin-top:6px; }
-  .pg.sel .n { color:var(--acc); font-weight:600; }
-  .pg .ck { position:absolute; top:12px; right:12px; width:22px; height:22px; border-radius:50%; background:rgba(0,0,0,.55); border:2px solid #fff; display:grid; place-items:center; font-size:13px; color:transparent; }
-  .pg.sel .ck { background:var(--acc); border-color:var(--acc); color:#25131a; }
-  .hint { color:var(--mut); font-size:13px; }
-  #msg { color:var(--acc2); font-size:13px; }
+  :root {
+    --ink:#14283c; --ink2:#46596d; --edge:rgba(10,40,70,.6);
+    --font:"Segoe UI","Leelawadee UI","Noto Sans Thai",Tahoma,system-ui,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html { background:#62bdf0; scrollbar-color:#7fa6cf #e6eef7; }
+  body { margin:0; min-height:100vh; color:var(--ink); font:15px/1.5 var(--font); }
+  ::selection { background:#3399ff; color:#fff; }
+  input { caret-color:#1a5fb4; }
+  a { color:#0b57a6; text-underline-offset:2px; }
   .hide { display:none !important; }
-  .privacy { border:1px solid #2f5d4e; background:#15231f; border-radius:12px; padding:12px 16px; margin-bottom:18px; }
-  .privacy b { color:var(--acc2); }
-  .privacy details { margin-top:6px; color:var(--mut); font-size:13px; }
-  .privacy summary { cursor:pointer; color:var(--fg); }
-  .privacy ul { margin:6px 0 0; padding-left:20px; }
-  footer { margin:36px 0 10px; color:var(--mut); font-size:12px; text-align:center; }
-  #lang { margin-left:auto; }
+  :is(button,input,summary,.pg):focus-visible { outline:2px solid #2b7fd6; outline-offset:2px; box-shadow:0 3px 6px rgba(255,255,255,.8); }
+
+  /* ---------- Aero wallpaper (all authored, no network) ---------- */
+  .scene { position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none;
+    background:
+      radial-gradient(ellipse 70% 40% at 82% 0%, rgba(255,255,255,.9), rgba(255,255,255,0) 70%),
+      linear-gradient(#2a97de 0%, #55b6ee 32%, #9bdcf7 62%, #d6f3e6 88%, #eaf9df 100%); }
+  .sun { position:absolute; right:6%; top:-14%; width:560px; height:560px; border-radius:50%;
+    background:radial-gradient(circle, #fff 0 7%, rgba(255,255,236,.92) 11%, rgba(255,255,255,.4) 30%, rgba(255,255,255,0) 62%); }
+  .rays { position:absolute; inset:0;
+    background:repeating-conic-gradient(from 198deg at 84% 2%, rgba(255,255,255,.24) 0 2.5deg, rgba(255,255,255,0) 2.5deg 8deg);
+    -webkit-mask-image:radial-gradient(circle at 84% 2%, #000 0, rgba(0,0,0,.55) 45%, transparent 78%);
+            mask-image:radial-gradient(circle at 84% 2%, #000 0, rgba(0,0,0,.55) 45%, transparent 78%); }
+  .clouds { position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 220px 54px at 14% 20%, rgba(255,255,255,.85), rgba(255,255,255,0) 72%),
+      radial-gradient(ellipse 140px 40px at 20% 23%, rgba(255,255,255,.8), rgba(255,255,255,0) 72%),
+      radial-gradient(ellipse 260px 60px at 58% 30%, rgba(255,255,255,.7), rgba(255,255,255,0) 72%),
+      radial-gradient(ellipse 170px 44px at 66% 34%, rgba(255,255,255,.7), rgba(255,255,255,0) 72%),
+      radial-gradient(ellipse 200px 48px at 36% 50%, rgba(255,255,255,.55), rgba(255,255,255,0) 72%),
+      radial-gradient(ellipse 240px 50px at 90% 46%, rgba(255,255,255,.55), rgba(255,255,255,0) 72%); }
+  .hills { position:absolute; left:0; bottom:38px; width:100%; height:34vh; min-height:170px; }
+  .grass { position:absolute; left:0; bottom:0; width:100%; height:64px; }
+  .bubble { position:absolute; left:var(--x); bottom:-180px; width:var(--s); height:var(--s); border-radius:50%; opacity:0;
+    background:radial-gradient(circle at 32% 27%, rgba(255,255,255,.96) 0 6%, rgba(255,255,255,.28) 17%, rgba(170,226,255,.10) 58%, rgba(255,255,255,.5) 91%, rgba(255,255,255,.88) 100%);
+    border:1px solid rgba(255,255,255,.75);
+    box-shadow:inset -6px -8px 14px rgba(110,196,255,.38), inset 4px 5px 10px rgba(255,255,255,.55), 0 5px 12px rgba(0,80,140,.14);
+    animation:rise var(--d) linear var(--delay) infinite; }
+  @keyframes rise {
+    0% { transform:translate(0,0); opacity:0; }
+    8% { opacity:.92; }
+    50% { transform:translate(30px,-58vh); }
+    92% { opacity:.92; }
+    100% { transform:translate(-20px,-118vh); opacity:0; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .bubble { animation:none; opacity:.85; bottom:var(--y); }
+  }
+
+  /* ---------- Window: Win7 glass frame ---------- */
+  .win { position:relative; max-width:1120px; margin:26px auto 100px; padding:3px 8px 8px; border-radius:9px;
+    border:1px solid var(--edge);
+    background:
+      linear-gradient(115deg, rgba(255,255,255,.62) 0 22%, rgba(255,255,255,.10) 22% 44%, rgba(255,255,255,.36) 44% 56%, rgba(255,255,255,.12) 56% 100%),
+      linear-gradient(rgba(196,229,252,.62), rgba(140,200,240,.55));
+    -webkit-backdrop-filter:blur(16px) saturate(1.5); backdrop-filter:blur(16px) saturate(1.5);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.72), 0 14px 42px rgba(0,45,90,.42), 0 2px 6px rgba(0,30,60,.35); }
+  .titlebar { display:flex; align-items:center; gap:8px; height:36px; padding-left:4px; }
+  .titlebar svg.appico { width:20px; height:20px; flex:none; }
+  h1 { margin:0; font-size:15px; font-weight:400; color:#0a1d31; letter-spacing:.1px;
+    text-shadow:0 0 10px #fff, 0 0 5px #fff, 0 0 3px #fff; }
+  .caps { margin-left:auto; align-self:flex-start; display:flex; margin-right:-3px; }
+  .caps span { display:grid; place-items:center; height:21px; border:1px solid var(--edge); border-top:0; margin-left:-1px; }
+  .caps svg { width:14px; height:14px; }
+  .caps .c1 { width:29px; border-radius:0 0 0 5px; background:linear-gradient(rgba(255,255,255,.75) 0 48%, rgba(170,205,238,.75) 52%); }
+  .caps .c2 { width:27px; background:linear-gradient(rgba(255,255,255,.75) 0 48%, rgba(170,205,238,.75) 52%); }
+  .caps .c3 { width:47px; border-radius:0 0 5px 0; background:linear-gradient(#efb2a6 0 48%, #c73f29 52%, #e0765a 100%); box-shadow:inset 0 0 0 1px rgba(255,255,255,.55); }
+  .addr { display:flex; gap:8px; align-items:center; padding:3px 0 9px; }
+  .abar { flex:1; min-width:0; display:flex; align-items:center; gap:8px; padding:4px 10px; border-radius:3px;
+    background:linear-gradient(#fff, #f4f8fc); border:1px solid #6f8aa8; border-top-color:#4d6a8a;
+    box-shadow:inset 0 1px 2px rgba(0,30,60,.18), 0 1px 0 rgba(255,255,255,.7); }
+  .abar svg { width:18px; height:18px; flex:none; }
+  .abar .hint { color:var(--ink); font-size:14px; }
+  .client { background:#fff; border:1px solid var(--edge); border-radius:2px; box-shadow:0 0 0 1px rgba(255,255,255,.55); }
+
+  /* ---------- Win7 push buttons + gel ---------- */
+  button { font:inherit; font-size:14px; color:#111; cursor:pointer; min-height:34px; padding:6px 14px; border-radius:3px;
+    background:linear-gradient(#f6f6f6 0 48%, #e3e3e3 52%, #d2d2d2 100%);
+    border:1px solid #6b6f74; box-shadow:inset 0 0 0 1px rgba(255,255,255,.85);
+    transition:background .15s ease, border-color .15s ease, box-shadow .15s ease; }
+  button:hover:not(:disabled) { background:linear-gradient(#eef8fe 0 48%, #d3ecfb 52%, #a9d9f5 100%); border-color:#2c7cb6; box-shadow:inset 0 0 0 1px rgba(255,255,255,.9), 0 2px 6px rgba(30,120,200,.4); }
+  button:active:not(:disabled) { background:linear-gradient(#c5e6f8 0 48%, #93cdee 52%, #7cc0e8 100%); border-color:#245f8c; box-shadow:inset 0 1px 3px rgba(0,50,90,.35); }
+  button:disabled { cursor:not-allowed; color:#767b80; background:linear-gradient(#f5f5f5, #ebebeb); border-color:#adb2b5; box-shadow:none; }
+  button.primary, button.alt { color:#fff; font-weight:600; text-shadow:0 1px 1px rgba(0,25,60,.75), 0 0 3px rgba(0,25,60,.4);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.7), inset 0 -3px 6px rgba(255,255,255,.28), 0 2px 5px rgba(0,50,100,.35); }
+  button.primary { background:linear-gradient(#5fb0ea 0 49%, #1d5fb0 51%, #2f86d8 100%); border-color:#154a86; }
+  button.primary:hover:not(:disabled) { background:linear-gradient(#8ccbf6 0 49%, #2a77cc 51%, #52aef0 100%); border-color:#154a86; box-shadow:inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(20,90,180,.5); }
+  button.primary:active:not(:disabled) { background:linear-gradient(#2c73c0 0 49%, #124a90 51%, #2470c0 100%); }
+  button.alt { background:linear-gradient(#69bd45 0 49%, #237414 51%, #3f9f27 100%); border-color:#1b5a10; }
+  button.alt:hover:not(:disabled) { background:linear-gradient(#93d872 0 49%, #2f8a1c 51%, #5cc03c 100%); border-color:#1b5a10; box-shadow:inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(20,100,20,.5); }
+  button.alt:active:not(:disabled) { background:linear-gradient(#2f8a1c 0 49%, #175c0c 51%, #2a7a18 100%); }
+  button.primary:disabled, button.alt:disabled { color:#6a7178; text-shadow:none; background:linear-gradient(#f0f0f0, #e2e2e2); border-color:#adb2b5; }
+  button.big { min-height:46px; padding:9px 28px; font-size:16px; border-radius:6px; }
+  #lang { min-width:52px; }
+
+  /* ---------- Privacy bar (green, Action Center style) ---------- */
+  .privacy { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; align-items:start; margin:16px 16px 14px; padding:11px 14px;
+    color:#1d3a12; border:1px solid #7fb958; border-radius:4px;
+    background:linear-gradient(#f3fbea, #d9f0c4); box-shadow:inset 0 0 0 1px rgba(255,255,255,.8), 0 1px 3px rgba(20,80,20,.18); }
+  .privacy > svg { width:34px; height:34px; grid-row:1 / span 3; margin-top:1px; filter:drop-shadow(0 1px 2px rgba(20,80,20,.4)); }
+  .privacy b { color:#17520a; }
+  .privacy .hint { color:#2c4f1f; }
+  .privacy details { color:#2c4f1f; font-size:13.5px; }
+  .privacy summary { cursor:pointer; color:#17400c; font-weight:600; width:max-content; max-width:100%; }
+  .privacy ul { margin:6px 0 2px; padding-left:20px; }
+  .privacy li { margin:2px 0; }
+
+  /* ---------- Drop zone ---------- */
+  #drop { margin:0 16px 20px; padding:30px 20px 34px; text-align:center; border-radius:6px; border:1px solid #b6cce3;
+    outline:2px dashed #8fb1d6; outline-offset:-9px;
+    background:radial-gradient(ellipse 80% 90% at 50% 0%, #fff, #ecf5fc 62%, #dcebf8 100%);
+    box-shadow:inset 0 1px 0 #fff; transition:background .15s ease, outline-color .15s ease, box-shadow .15s ease; cursor:pointer; }
+  #drop.over { background:radial-gradient(ellipse 80% 90% at 50% 0%, #fff, #d9edff 60%, #bcdcf7 100%); outline-color:#2a7fd0; box-shadow:0 3px 8px rgba(30,110,200,.35); }
+  #drop .big-ico { width:104px; height:104px; filter:drop-shadow(0 6px 8px rgba(20,60,110,.35)); }
+  #drop p { margin:6px 0 18px; color:var(--ink2); font-size:16px; }
+
+  /* ---------- Explorer command bar ---------- */
+  .tools { z-index:5; background:linear-gradient(#fdfeff, #e8f0f9); border-top:1px solid #fff; border-bottom:1px solid #a9bdd3;
+    box-shadow:0 2px 5px rgba(0,40,80,.14); }
+  @media (min-width:700px) { .tools { position:sticky; top:0; } }
+  .bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:9px 16px; }
+  .bar + .bar { border-top:1px solid rgba(150,175,205,.55); }
+  .bar b { color:var(--ink); }
+  .bar input[type=text] { width:200px; min-height:34px; padding:5px 9px; color:var(--ink); font:inherit; font-size:14px; background:#fff;
+    border:1px solid #abadb3; border-top-color:#8e97a3; border-radius:2px; box-shadow:inset 0 1px 2px rgba(0,30,60,.15); }
+  .bar input[type=text]:focus { border-color:#3399ff; box-shadow:inset 0 1px 2px rgba(0,30,60,.12), 0 2px 5px rgba(30,110,200,.45); outline:0; }
+  .sp { flex:1; }
+  .hint { color:var(--ink2); font-size:13.5px; }
+  #msg { color:#17600a; font-size:13.5px; font-weight:600; }
+  .howto { padding:10px 16px 6px; }
+
+  /* ---------- Thumbnails (Explorer "large icons") ---------- */
+  #grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:6px 8px; padding:6px 16px 20px; }
+  .pg { position:relative; padding:9px 9px 7px; border:1px solid transparent; border-radius:4px; cursor:pointer; user-select:none;
+    transition:background .15s ease, border-color .15s ease; }
+  .pg:hover { background:linear-gradient(#fdfeff, #e8f4fd); border-color:#c6dcf2; box-shadow:inset 0 0 0 1px rgba(255,255,255,.85); }
+  .pg.sel { background:linear-gradient(#eaf6ff, #c4e3fa); border-color:#77a6d8; box-shadow:inset 0 0 0 1px rgba(255,255,255,.9); }
+  .pg canvas { width:100%; height:auto; display:block; background:#fff; border:1px solid #93a5b8; box-shadow:0 3px 7px rgba(20,50,90,.35); }
+  .pg .n { text-align:center; color:var(--ink); font-size:13.5px; margin-top:9px; }
+  .pg.sel .n { font-weight:600; color:#0d3a6e; }
+  .pg .ck { position:absolute; top:14px; right:14px; width:26px; height:26px; opacity:0; transform:scale(.55);
+    transition:opacity .16s ease, transform .16s cubic-bezier(.2,.9,.3,1.3); filter:drop-shadow(0 2px 3px rgba(0,40,90,.5)); }
+  .pg.sel .ck { opacity:1; transform:none; }
+
+  .status { margin-top:2px; padding:7px 16px; text-align:center; color:var(--ink2); font-size:12.5px;
+    background:linear-gradient(#f7fafd, #e2ebf5); border-top:1px solid #b3c5d9; }
+
+  /* ---------- Small screens ---------- */
+  @media (max-width:699px) {
+    .win { margin:8px 6px 84px; padding:0 5px 5px; }
+    .titlebar { height:32px; }
+    h1 { font-size:14px; }
+    .caps .c1, .caps .c2 { width:24px; } .caps .c3 { width:38px; }
+    .privacy { margin:12px 10px; padding:10px; grid-template-columns:auto 1fr; }
+    .privacy > svg { width:28px; height:28px; }
+    #drop { margin:0 10px 14px; padding:22px 14px 26px; }
+    #drop .big-ico { width:84px; height:84px; }
+    .bar { padding:8px 10px; }
+    .bar input[type=text] { flex:1 1 100%; width:auto; }
+    button { min-height:40px; padding:8px 14px; }
+    .howto { padding:8px 10px 4px; }
+    #grid { padding:6px 10px 16px; gap:4px 6px; }
+    .hills { height:22vh; }
+    .sun { width:400px; height:400px; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>✂️ PDF Splitter</h1>
-  <span class="hint" data-i18n="tagline"></span>
-  <button id="lang" title="Language / ภาษา">EN</button>
-</header>
-<main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-pdf" viewBox="0 0 64 64">
+      <defs>
+        <linearGradient id="gp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfe2f4"/></linearGradient>
+        <linearGradient id="gt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f08a78"/><stop offset=".5" stop-color="#d23c26"/><stop offset=".52" stop-color="#b52a16"/><stop offset="1" stop-color="#d9553a"/></linearGradient>
+      </defs>
+      <path d="M13 3h28l12 12v46H13z" fill="url(#gp)" stroke="#5b7a99" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M41 3v12h12" fill="#dce9f6" stroke="#5b7a99" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M18 8h18" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+      <rect x="5" y="30" width="40" height="19" rx="4" fill="url(#gt)" stroke="#7d1b0c" stroke-width="1.5"/>
+      <text x="25" y="44" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">PDF</text>
+      <path d="M8 33h34" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 32 32">
+      <defs><linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fdc63"/><stop offset=".5" stop-color="#3ea425"/><stop offset=".52" stop-color="#24800f"/><stop offset="1" stop-color="#48b02c"/></linearGradient></defs>
+      <path d="M16 2.5l11 3.8v8.2c0 6.3-4.4 11.2-11 14.8C9.4 25.7 5 20.8 5 14.5V6.3z" fill="url(#gs)" stroke="#17520a" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M16 4.6l9 3.1v6.8c0 .6 0 1.1-.1 1.6-1.6-2.6-5.2-3.4-8.9-3.4s-7.300.8-8.900 3.400c-.1-.5-.1-1-.1-1.600V7.700z" fill="#fff" opacity=".28"/>
+      <path d="M10.500 15.500l4 4 7.500-8.500" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 26 26">
+      <defs><linearGradient id="gc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc4f4"/><stop offset=".49" stop-color="#2d84d6"/><stop offset=".51" stop-color="#1c5fb0"/><stop offset="1" stop-color="#3a95e2"/></linearGradient></defs>
+      <circle cx="13" cy="13" r="11.500" fill="url(#gc)" stroke="#fff" stroke-width="2"/>
+      <path d="M7.500 13.500l4 4 7-8" fill="none" stroke="#fff" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="scene" aria-hidden="true">
+  <div class="sun"></div><div class="rays"></div><div class="clouds"></div>
+  <i class="bubble" style="--x:6%;--s:64px;--d:46s;--delay:-6s;--y:62%"></i>
+  <i class="bubble" style="--x:16%;--s:26px;--d:34s;--delay:-20s;--y:30%"></i>
+  <i class="bubble" style="--x:27%;--s:44px;--d:52s;--delay:-34s;--y:74%"></i>
+  <i class="bubble" style="--x:41%;--s:18px;--d:30s;--delay:-12s;--y:48%"></i>
+  <i class="bubble" style="--x:56%;--s:72px;--d:60s;--delay:-44s;--y:22%"></i>
+  <i class="bubble" style="--x:68%;--s:30px;--d:38s;--delay:-8s;--y:68%"></i>
+  <i class="bubble" style="--x:79%;--s:50px;--d:48s;--delay:-28s;--y:38%"></i>
+  <i class="bubble" style="--x:90%;--s:22px;--d:32s;--delay:-16s;--y:56%"></i>
+  <i class="bubble" style="--x:95%;--s:82px;--d:64s;--delay:-50s;--y:78%"></i>
+  <svg class="hills" viewBox="0 0 1440 320" preserveAspectRatio="none" focusable="false">
+    <defs>
+      <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9dcc4"/><stop offset="1" stop-color="#6cbf8a"/></linearGradient>
+      <linearGradient id="h2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86d15c"/><stop offset="1" stop-color="#3fa02a"/></linearGradient>
+      <linearGradient id="h3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fbf37"/><stop offset="1" stop-color="#2a7f18"/></linearGradient>
+    </defs>
+    <path d="M0 190C180 110 380 168 610 132S1040 70 1440 160V320H0Z" fill="url(#h1)" opacity=".9"/>
+    <path d="M0 236C220 168 470 232 720 196S1170 150 1440 226V320H0Z" fill="url(#h2)"/>
+    <path d="M0 282C260 236 560 278 860 254S1250 236 1440 268V320H0Z" fill="url(#h3)"/>
+  </svg>
+  <svg class="grass" width="100%" height="64" focusable="false">
+    <defs>
+      <pattern id="b1" width="31" height="64" patternUnits="userSpaceOnUse"><path d="M0 64L3 26L7 64ZM9 64L13 10L18 64ZM20 64L23 30L27 64ZM26 64L29 40L31 64Z" fill="#43a626"/></pattern>
+      <pattern id="b2" width="43" height="64" x="14" patternUnits="userSpaceOnUse"><path d="M0 64L4 22L9 64ZM14 64L19 6L25 64ZM30 64L34 28L39 64Z" fill="#2d8a19"/></pattern>
+      <linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8f1a"/><stop offset="1" stop-color="#16600b"/></linearGradient>
+    </defs>
+    <rect y="38" width="100%" height="26" fill="url(#gf)"/>
+    <rect width="100%" height="64" fill="url(#b1)"/>
+    <rect width="100%" height="64" fill="url(#b2)" opacity=".92"/>
+  </svg>
+</div>
+
+<div class="win">
+  <div class="titlebar">
+    <svg class="appico" aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg>
+    <h1>PDF Splitter</h1>
+    <div class="caps" aria-hidden="true">
+      <span class="c1"><svg viewBox="0 0 14 14"><rect x="3" y="8" width="8" height="3" fill="#1a2f45"/></svg></span>
+      <span class="c2"><svg viewBox="0 0 14 14"><rect x="2.500" y="2.500" width="9" height="8" fill="none" stroke="#1a2f45" stroke-width="1.600"/><rect x="2.500" y="2.500" width="9" height="2.600" fill="#1a2f45"/></svg></span>
+      <span class="c3"><svg viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke="#fff" stroke-width="2.400" stroke-linecap="round"/></svg></span>
+    </div>
+  </div>
+  <div class="addr">
+    <div class="abar"><svg aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg><span class="hint" data-i18n="tagline"></span></div>
+    <button id="lang" type="button" title="Language / ภาษา">EN</button>
+  </div>
+
+<main class="client">
   <section class="privacy" id="privacy">
-    <div>🔒 <b data-i18n="priv_head"></b> <span data-i18n="priv_body"></span></div>
-    <div class="hint" id="privCounter" style="margin-top:4px"></div>
+    <svg aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>
+    <div><b data-i18n="priv_head"></b> <span data-i18n="priv_body"></span></div>
+    <div class="hint" id="privCounter"></div>
     <details>
       <summary data-i18n="priv_verify_title"></summary>
       <ul>
@@ -68,35 +269,41 @@
     </details>
   </section>
 
-  <div id="drop"><span data-i18n="drop"></span><input id="file" type="file" accept="application/pdf" class="hide"></div>
+  <div id="drop">
+    <svg class="big-ico" aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg>
+    <p data-i18n="drop"></p>
+    <button id="bChoose" type="button" class="primary big" data-i18n="choose"></button>
+  </div>
+  <input id="file" type="file" accept="application/pdf" class="hide">
 
   <div id="work" class="hide">
     <div class="tools">
     <div class="bar">
       <b id="fname"></b><span class="hint" id="count"></span>
       <span class="sp"></span>
-      <button id="bAll" data-i18n="all"></button>
-      <button id="bNone" data-i18n="none"></button>
-      <button id="bInv" data-i18n="inv"></button>
-      <button id="bOdd" data-i18n="odd"></button>
-      <button id="bEven" data-i18n="even"></button>
+      <button id="bAll" type="button" data-i18n="all"></button>
+      <button id="bNone" type="button" data-i18n="none"></button>
+      <button id="bInv" type="button" data-i18n="inv"></button>
+      <button id="bOdd" type="button" data-i18n="odd"></button>
+      <button id="bEven" type="button" data-i18n="even"></button>
       <input id="range" type="text" data-i18n-ph="range_ph">
     </div>
     <div class="bar">
       <span id="selInfo" class="hint"></span>
       <span class="sp"></span>
       <span id="msg"></span>
-      <button id="bExtract" class="primary" disabled data-i18n="extract"></button>
-      <button id="bEach" class="alt" disabled data-i18n="each"></button>
-      <button id="bDelete" disabled data-i18n="del"></button>
-      <button id="bOther" data-i18n="other"></button>
+      <button id="bExtract" type="button" class="primary" disabled data-i18n="extract"></button>
+      <button id="bEach" type="button" class="alt" disabled data-i18n="each"></button>
+      <button id="bDelete" type="button" disabled data-i18n="del"></button>
+      <button id="bOther" type="button" data-i18n="other"></button>
     </div>
     </div>
-    <div class="hint" style="margin-bottom:10px" data-i18n="howto"></div>
+    <div class="hint howto" data-i18n="howto"></div>
     <div id="grid"></div>
   </div>
-  <footer><span data-i18n="foot"></span></footer>
+  <footer class="status"><span data-i18n="foot"></span></footer>
 </main>
+</div>
 
 <script>/*PDFLIB*/</script>
 <script>/*PDFJS*/</script>
@@ -120,6 +327,7 @@
       priv_v3: 'บันทึกหน้านี้เป็นไฟล์ .html แล้วปิดอินเทอร์เน็ต ก็ยังใช้งานได้ตามปกติ',
       priv_v4: 'ดูซอร์สโค้ดทั้งหมดบน GitHub',
       drop: 'ลากไฟล์ PDF มาวางตรงนี้ หรือคลิกเพื่อเลือกไฟล์',
+      choose: 'เลือกไฟล์ PDF',
       all: 'เลือกทั้งหมด', none: 'ล้าง', inv: 'กลับด้าน', odd: 'คี่', even: 'คู่',
       range_ph: 'เช่น 1-3, 5, 8-10',
       extract: 'ตัดหน้าที่เลือกเป็น 1 ไฟล์', each: 'แยกทีละหน้า (หลายไฟล์)', del: 'ลบหน้าที่เลือกทิ้ง', other: 'เปลี่ยนไฟล์',
@@ -143,6 +351,7 @@
       priv_v3: 'Save this page as an .html file, go offline, and it still works.',
       priv_v4: 'Read the full source code on GitHub',
       drop: 'Drop a PDF here, or click to choose a file',
+      choose: 'Choose PDF file',
       all: 'Select all', none: 'Clear', inv: 'Invert', odd: 'Odd', even: 'Even',
       range_ph: 'e.g. 1-3, 5, 8-10',
       extract: 'Extract selected into 1 file', each: 'Split into one file per page', del: 'Delete selected pages', other: 'Change file',
@@ -178,6 +387,7 @@
 
   const drop = $('drop'), fileIn = $('file');
   drop.onclick = () => fileIn.click();
+  $('bChoose').onclick = ev => { ev.stopPropagation(); fileIn.click(); };
   fileIn.onchange = () => fileIn.files[0] && load(fileIn.files[0]);
   ['dragenter','dragover'].forEach(e => document.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('over'); }));
   ['dragleave','drop'].forEach(e => document.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('over'); }));
@@ -199,7 +409,9 @@
     $('count').textContent = t('pages', total);
     for (let i = 1; i <= total; i++) {
       const d = document.createElement('div'); d.className = 'pg';
-      d.innerHTML = '<div class="ck">✓</div><canvas></canvas><div class="n"></div>';
+      d.innerHTML = '<svg class="ck" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><canvas></canvas><div class="n"></div>';
+      d.tabIndex = 0; d.setAttribute('role', 'checkbox'); d.setAttribute('aria-checked', 'false');
+      d.onkeydown = ev => { if (ev.key === ' ' || ev.key === 'Enter') { ev.preventDefault(); click(i, ev.shiftKey); } };
       d.querySelector('.n').textContent = t('page', i);
       d.onclick = ev => click(i, ev.shiftKey);
       $('grid').appendChild(d); cells[i] = d;
@@ -242,7 +454,7 @@
     return set;
   }
   function refresh(syncInput) {
-    cells.forEach((c, i) => c && c.classList.toggle('sel', sel.has(i)));
+    cells.forEach((c, i) => { if (c) { c.classList.toggle('sel', sel.has(i)); c.setAttribute('aria-checked', sel.has(i)); } });
     if (syncInput) $('range').value = toRange(sel);
     const n = sel.size;
     $('selInfo').textContent = n ? t('sel_info', n, total) : t('none_sel');
