@@ -15,7 +15,7 @@
 
 <br>
 
-<img src="docs/screenshots/desktop-en-select.jpg" alt="PDF Splitter in the default Modern Clay look: page thumbnails with five pages selected, orange accent" width="900">
+<img src="docs/screenshots/desktop-en-select.jpg" alt="PDF Splitter in the default minimal Clay look: page thumbnails with five pages selected, orange accent" width="900">
 
 </div>
 
@@ -36,7 +36,7 @@ PDF Splitter does the whole job inside your browser tab. There is no upload step
 | **Quick selectors** | Select all, clear, invert, odd pages, even pages. |
 | **Thai and English** | Auto-detected from the browser, one-click toggle, or force it with `?lang=th` / `?lang=en`. |
 | **Offline copy** | The **Download offline copy** button (bottom-left) gives you one self-contained HTML file with no visit counter and every network connection blocked. Keep it on your desktop and use it with the internet off. |
-| **Four looks** | **Modern Clay** (soft white surfaces, orange accent, inflated clay shadows) is the default. The theme button next to the language button switches to **Windows 7 Frutiger Aero**. The window's minimize button switches to a green-on-black terminal (TUI) look, the maximize button to an Ubuntu 22.04 "Jammy Jellyfish" desktop. Press it again to return to Clay. Same features in all four. |
+| **Four looks** | **Clay** (minimal: flat white, hairline borders, one orange accent) is the default. The theme button next to the language button switches to **Windows 7 Frutiger Aero**. The window's minimize button switches to a green-on-black terminal (TUI) look, the maximize button to an Ubuntu 22.04 "Jammy Jellyfish" desktop. Press it again to return to Clay. Same features in all four. |
 | **Keyboard friendly** | Thumbnails are focusable checkboxes: `Tab` to move, `Space` or `Enter` to toggle. |
 | **Responsive** | Desktop and phone layouts. |
 
@@ -157,6 +157,6 @@ pdf-splitter/
 
 ## Credits and license
 
-Built with [pdf-lib](https://github.com/Hopding/pdf-lib) (MIT) and [PDF.js](https://github.com/mozilla/pdf.js) (Apache-2.0). The default look is a white-and-orange claymorphism style, with Windows 7 Frutiger Aero, Ubuntu 22.04 and a terminal look as alternatives; all artwork is drawn in inline SVG and CSS.
+Built with [pdf-lib](https://github.com/Hopding/pdf-lib) (MIT) and [PDF.js](https://github.com/mozilla/pdf.js) (Apache-2.0). The default look is a minimal white-and-orange style, with Windows 7 Frutiger Aero, Ubuntu 22.04 and a terminal look as alternatives; all artwork is drawn in inline SVG and CSS.
 
 Released under the [MIT License](LICENSE). Provided as is, without warranty.

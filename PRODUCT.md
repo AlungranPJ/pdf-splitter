@@ -37,7 +37,7 @@ Runs from GitHub Pages or a saved `.html` file, offline-capable. Optional anonym
 
 ## Brand Commitments
 
-Four looks share one DOM and one set of functions. The owner pinned **Modern Clay as the default**: claymorphism on white surfaces with an orange accent, soft inflated shadows, big radii. Windows 7 / Frutiger Aero (glass, gel buttons, sky, bubbles, grass), Ubuntu 22.04 and a green-on-black terminal look stay as opt-in themes at full commitment. Existing copy, buttons, functions and the privacy box stay in every look. The offline copy opens in Clay too.
+Four looks share one DOM and one set of functions. The owner pinned **Clay as the default** and then asked for it to be more minimalist: flat white surfaces, hairline borders, one orange accent (only the primary action is filled), round shapes, no decorative props or heavy shadows. Windows 7 / Frutiger Aero (glass, gel buttons, sky, bubbles, grass), Ubuntu 22.04 and a green-on-black terminal look stay as opt-in themes at full commitment. Existing copy, buttons, functions and the privacy box stay in every look. The offline copy opens in Clay too.
 
 ## Evidence on Hand
 
