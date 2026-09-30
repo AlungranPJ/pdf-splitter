@@ -76,6 +76,26 @@
   .caps .c1 { width:29px; border-radius:0 0 0 5px; background:linear-gradient(rgba(255,255,255,.75) 0 48%, rgba(170,205,238,.75) 52%); }
   .caps .c2 { width:27px; background:linear-gradient(rgba(255,255,255,.75) 0 48%, rgba(170,205,238,.75) 52%); }
   .caps .c3 { width:47px; border-radius:0 0 5px 0; background:linear-gradient(#efb2a6 0 48%, #c73f29 52%, #e0765a 100%); box-shadow:inset 0 0 0 1px rgba(255,255,255,.55); }
+  .caps button.c3 { display:grid; place-items:center; height:21px; min-height:0; padding:0; margin:0 0 0 -1px; cursor:pointer;
+    border:1px solid var(--edge); border-top:0; border-radius:0 0 5px 0;
+    background:linear-gradient(#efb2a6 0 48%, #c73f29 52%, #e0765a 100%); box-shadow:inset 0 0 0 1px rgba(255,255,255,.55); transition:filter .15s ease; }
+  .caps button.c3:hover:not(:disabled) { filter:brightness(1.14) saturate(1.15); background:linear-gradient(#f6c4ba 0 48%, #dc4a30 52%, #f08a6a 100%);
+    border-color:var(--edge); box-shadow:inset 0 0 0 1px rgba(255,255,255,.7), 0 2px 6px rgba(200,50,30,.55); }
+  .caps button.c3:active:not(:disabled) { filter:brightness(.88); background:linear-gradient(#c0442d 0 48%, #8f2714 52%, #b8452c 100%);
+    border-color:var(--edge); box-shadow:inset 0 1px 3px rgba(60,0,0,.5); }
+  .caps button.c3:focus-visible { outline-offset:-5px; }
+  .caps button.c3.nope svg { animation:nope .42s ease; }
+  @keyframes nope { 0%,100% { transform:translateX(0); } 20% { transform:translateX(-2.5px); } 40% { transform:translateX(2.5px); } 60% { transform:translateX(-2px); } 80% { transform:translateX(2px); } }
+
+  /* ---------- Easter egg: the decorative close button points at the real one ---------- */
+  .oops { position:fixed; inset:0; z-index:100; pointer-events:none; overflow:hidden; }
+  .oops-cur { position:absolute; left:0; top:0; width:26px; height:29px; opacity:0; transform-origin:1px 1px;
+    filter:drop-shadow(1px 2px 2px rgba(0,30,60,.55)); will-change:transform,opacity; }
+  .oops-tip { position:absolute; right:12px; top:56px; max-width:min(270px, calc(100vw - 24px)); padding:8px 13px; opacity:0; transform-origin:92% 0;
+    font-size:14px; font-weight:600; color:#111; background:linear-gradient(#ffffef, #ffffd3); border:1px solid #767676; border-radius:5px;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.8), 0 3px 8px rgba(0,30,60,.4); }
+  .oops-tip::before { content:""; position:absolute; top:-8px; right:16px; width:13px; height:13px; transform:rotate(45deg);
+    background:#ffffef; border-left:1px solid #767676; border-top:1px solid #767676; }
   .addr { display:flex; gap:8px; align-items:center; padding:3px 0 9px; }
   .abar { flex:1; min-width:0; display:flex; align-items:center; gap:8px; padding:4px 10px; border-radius:3px;
     background:linear-gradient(#fff, #f4f8fc); border:1px solid #6f8aa8; border-top-color:#4d6a8a;
@@ -162,6 +182,8 @@
     .titlebar { height:32px; }
     h1 { font-size:14px; }
     .caps .c1, .caps .c2 { width:24px; } .caps .c3 { width:38px; }
+    .caps button.c3 { position:relative; }
+    .caps button.c3::after { content:""; position:absolute; inset:-8px -6px -16px -10px; }
     .privacy { margin:12px 10px; padding:10px; grid-template-columns:auto 1fr; }
     .privacy > svg { width:28px; height:28px; }
     #drop { margin:0 10px 14px; padding:22px 14px 26px; }
@@ -242,10 +264,10 @@
   <div class="titlebar">
     <svg class="appico" aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg>
     <h1>PDF Splitter</h1>
-    <div class="caps" aria-hidden="true">
-      <span class="c1"><svg viewBox="0 0 14 14"><rect x="3" y="8" width="8" height="3" fill="#1a2f45"/></svg></span>
-      <span class="c2"><svg viewBox="0 0 14 14"><rect x="2.500" y="2.500" width="9" height="8" fill="none" stroke="#1a2f45" stroke-width="1.600"/><rect x="2.500" y="2.500" width="9" height="2.600" fill="#1a2f45"/></svg></span>
-      <span class="c3"><svg viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke="#fff" stroke-width="2.400" stroke-linecap="round"/></svg></span>
+    <div class="caps">
+      <span class="c1" aria-hidden="true"><svg viewBox="0 0 14 14"><rect x="3" y="8" width="8" height="3" fill="#1a2f45"/></svg></span>
+      <span class="c2" aria-hidden="true"><svg viewBox="0 0 14 14"><rect x="2.500" y="2.500" width="9" height="8" fill="none" stroke="#1a2f45" stroke-width="1.600"/><rect x="2.500" y="2.500" width="9" height="2.600" fill="#1a2f45"/></svg></span>
+      <button id="bClose" type="button" class="c3"><svg viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M3 3l8 8M11 3l-8 8" stroke="#fff" stroke-width="2.400" stroke-linecap="round"/></svg></button>
     </div>
   </div>
   <div class="addr">
@@ -305,6 +327,11 @@
 </main>
 </div>
 
+<div id="oops" class="oops hide" aria-hidden="true">
+  <svg id="oopsCur" class="oops-cur" viewBox="0 0 20 22" focusable="false"><path d="M1 1 L1 18 L5.400 13.900 L8.500 20.600 L11.300 19.300 L8.300 12.700 L14.400 12.500 Z" fill="#fff" stroke="#111" stroke-width="1.300" stroke-linejoin="round"/></svg>
+  <div id="oopsTip" class="oops-tip" lang="en">lolz wrong button bro</div>
+</div>
+
 <script>/*PDFLIB*/</script>
 <script>/*PDFJS*/</script>
 <script id="workersrc" type="text/plain">/*WORKER*/</script>
@@ -317,6 +344,7 @@
   const I18N = {
     th: {
       tagline: 'ตัดหน้า PDF ฟรี ทำงานในเครื่องคุณทั้งหมด',
+      close: 'ปิด',
       priv_head: 'ไฟล์ของคุณไม่ออกจากเครื่อง',
       priv_body: 'ทุกอย่างประมวลผลในเบราว์เซอร์ของคุณเท่านั้น ไม่มีการอัปโหลด ไม่มีเซิร์ฟเวอร์รับไฟล์ และไม่เก็บข้อมูลจากไฟล์ของคุณเด็ดขาด',
       priv_counter: 'สิ่งเดียวที่นับคือจำนวนผู้เข้าชมหน้านี้แบบไม่ระบุตัวตน (GoatCounter: ไม่ใช้ cookie ไม่เก็บ IP เต็ม ไม่เห็นชื่อไฟล์หรือเนื้อหาไฟล์) และจะไม่นับถ้าเบราว์เซอร์ของคุณเปิด Do Not Track',
@@ -341,6 +369,7 @@
     },
     en: {
       tagline: 'Free PDF page splitter. Runs entirely on your device.',
+      close: 'Close',
       priv_head: 'Your files never leave your device.',
       priv_body: 'Everything is processed inside your own browser. No upload, no server that receives files, and nothing from your files is ever stored.',
       priv_counter: 'The only thing counted is the number of visitors to this page, anonymously (GoatCounter: no cookies, no full IP stored, it never sees file names or contents). Nothing is counted if your browser sends Do Not Track.',
@@ -376,10 +405,61 @@
     document.querySelectorAll('[data-i18n-ph]').forEach(e => e.placeholder = t(e.dataset.i18nPh));
     $('privCounter').textContent = t(HAS_COUNTER ? 'priv_counter' : 'priv_nocounter');
     $('lang').textContent = lang === 'th' ? 'EN' : 'ไทย';
+    $('bClose').setAttribute('aria-label', t('close'));
     if (total) { $('count').textContent = t('pages', total); cells.forEach((c, i) => c && (c.querySelector('.n').textContent = t('page', i))); }
     refresh(false);
   }
   $('lang').onclick = () => { lang = lang === 'th' ? 'en' : 'th'; applyLang(); };
+
+  // ---------- Easter egg: the fake close button points at the browser's real one ----------
+  const oops = $('oops'), cur = $('oopsCur'), tip = $('oopsTip'), bClose = $('bClose');
+  let oopsAnims = [], oopsTimer = 0;
+  function oopsStop() {
+    clearTimeout(oopsTimer);
+    oopsAnims.forEach(a => a.cancel()); oopsAnims = [];
+    oops.classList.add('hide'); oops.setAttribute('aria-hidden', 'true');
+    bClose.classList.remove('nope');
+  }
+  bClose.onclick = () => {
+    oopsStop();
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const r = bClose.getBoundingClientRect();
+    const sx = r.left + r.width / 2, sy = r.top + r.height / 2;   // where the pointer "clicked"
+    const ex = innerWidth - 30, ey = 3;                           // tip ends near the real close button
+    oops.classList.remove('hide'); oops.setAttribute('aria-hidden', 'false');
+    void bClose.offsetWidth; if (!calm) bClose.classList.add('nope');
+    const at = (x, y, s, fx) => `translate(${x}px,${y}px) scale(${fx ? -s : s},${s})`;
+    const go = (el, frames, o) => { const a = el.animate(frames, Object.assign({ fill: 'forwards' }, o)); oopsAnims.push(a); return a; };
+    if (calm) {
+      go(cur, [{ opacity: 1, transform: at(ex, ey, 1, true) }, { opacity: 1, transform: at(ex, ey, 1, true) }], { duration: 10 });
+      go(tip, [{ opacity: 0 }, { opacity: 1 }], { duration: 200 });
+    } else {
+      // 1) pointer appears on the button, 2) flips and slides to the top-right corner, 3) nudges toward the real X
+      go(cur, [
+        { opacity: 0, transform: at(sx, sy, .7, false), offset: 0 },
+        { opacity: 1, transform: at(sx, sy, 1, false), offset: .12 },
+        { opacity: 1, transform: at(sx, sy, 1, false), offset: .26 },
+        { opacity: 1, transform: at(sx, sy, 1, true), offset: .34, easing: 'cubic-bezier(.3,.05,.2,1)' },
+        { opacity: 1, transform: at(ex, ey, 1, true), offset: .68 },
+        { opacity: 1, transform: at(ex + 5, ey - 3, 1, true), offset: .76 },
+        { opacity: 1, transform: at(ex, ey, 1, true), offset: .84 },
+        { opacity: 1, transform: at(ex + 5, ey - 3, 1, true), offset: .92 },
+        { opacity: 1, transform: at(ex, ey, 1, true), offset: 1 }
+      ], { duration: 2200 });
+      go(tip, [
+        { opacity: 0, transform: 'scale(.6)', offset: 0 },
+        { opacity: 0, transform: 'scale(.6)', offset: .62 },
+        { opacity: 1, transform: 'scale(1.06)', offset: .74 },
+        { opacity: 1, transform: 'scale(1)', offset: .8 },
+        { opacity: 1, transform: 'scale(1)', offset: 1 }
+      ], { duration: 2200 });
+    }
+    oopsTimer = setTimeout(() => {
+      const f = [{ opacity: 1 }, { opacity: 0 }];
+      go(cur, f, { duration: 350 }); go(tip, f, { duration: 350 }).onfinish = oopsStop;
+    }, (calm ? 200 : 2200) + 1800);
+  };
+  addEventListener('keydown', e => { if (e.key === 'Escape') oopsStop(); });
 
   // ---------- pdf.js worker (from inline blob, no network) ----------
   // file:// pages have an opaque origin, so a blob: Worker cannot start there. In that case the worker
