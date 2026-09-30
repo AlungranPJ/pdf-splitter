@@ -29,7 +29,7 @@ PDF Splitter does the whole job inside your browser tab. There is no upload step
 
 ## Features
 
-| | |
+| Feature | What it does |
 |---|---|
 | **Pick pages visually** | Click thumbnails, `Shift`+click for a range, or type `1-3, 5, 8-10`. |
 | **Three outputs** | Extract the selection into **one file**, split into **one file per page**, or **delete** the selected pages. |
