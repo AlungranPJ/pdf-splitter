@@ -27,14 +27,14 @@ jobs:
           python-version: "3.12"
       # Optional anonymous visit counter: set repo variable GOATCOUNTER_CODE.
       # Leave it unset and the built page contains no tracking code at all.
-      - name: Build index.html
+      - name: Build index.html and the offline copy
         env:
           GOATCOUNTER_CODE: ${{ vars.GOATCOUNTER_CODE }}
         run: python build.py
       - name: Stage site
         run: |
           mkdir _site
-          cp index.html _site/index.html
+          cp index.html pdf-splitter-offline.html _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -35,7 +35,8 @@ PDF Splitter does the whole job inside your browser tab. There is no upload step
 | **Three outputs** | Extract the selection into **one file**, split into **one file per page**, or **delete** the selected pages. |
 | **Quick selectors** | Select all, clear, invert, odd pages, even pages. |
 | **Thai and English** | Auto-detected from the browser, one-click toggle, or force it with `?lang=th` / `?lang=en`. |
-| **Works offline** | One self-contained HTML file. Save it, open it from disk, no internet needed. |
+| **Offline copy** | The **Download offline copy** button (bottom-left) gives you one self-contained HTML file with no visit counter and every network connection blocked. Keep it on your desktop and use it with the internet off. |
+| **Three looks** | Windows 7 Frutiger Aero by default. The window's minimize button switches to a green-on-black terminal (TUI) look, the maximize button to an Ubuntu 22.04 "Jammy Jellyfish" desktop. Press it again to go back. Same features in all three. |
 | **Keyboard friendly** | Thumbnails are focusable checkboxes: `Tab` to move, `Space` or `Enter` to toggle. |
 | **Responsive** | Desktop and phone layouts. |
 
@@ -51,6 +52,14 @@ PDF Splitter does the whole job inside your browser tab. There is no upload step
     <td align="center"><sub>Thai interface (auto-detected)</sub></td>
   </tr>
   <tr>
+    <td width="50%"><img src="docs/screenshots/desktop-ubuntu-select.jpg" alt="Ubuntu 22.04 look with a jellyfish wallpaper"></td>
+    <td width="50%"><img src="docs/screenshots/desktop-tui-select.jpg" alt="Green-on-black terminal look"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Maximize button: Ubuntu 22.04 look</sub></td>
+    <td align="center"><sub>Minimize button: terminal (TUI) look</sub></td>
+  </tr>
+  <tr>
     <td width="50%"><img src="docs/screenshots/desktop-en-privacy.jpg" alt="Privacy notice with the how-to-verify list expanded"></td>
     <td width="50%" align="center"><img src="docs/screenshots/mobile-en-select.jpg" alt="Phone layout" width="240"></td>
   </tr>
@@ -60,7 +69,7 @@ PDF Splitter does the whole job inside your browser tab. There is no upload step
   </tr>
 </table>
 
-> Screenshots were taken from a local build without the visit counter, using a synthetic sample PDF. The hosted site additionally shows the counter sentence described under [Privacy](#privacy).
+> Screenshots were taken from a local build without the visit counter, using a synthetic sample PDF. The hosted site additionally shows the counter sentence described under [Privacy](#privacy). The Ubuntu wallpaper is an original drawing in the spirit of the Jammy Jellyfish artwork, not a copy of it.
 
 ## How to use
 
@@ -68,6 +77,10 @@ PDF Splitter does the whole job inside your browser tab. There is no upload step
 2. Drop a PDF on the page, or press **Choose PDF file**.
 3. Select pages by clicking thumbnails, or type a range such as `2-4, 7, 9`.
 4. Press one of the three actions. The result downloads straight from your browser.
+
+### Use it offline (no data can leave)
+
+Press **Download offline copy** at the bottom-left of the page and save `pdf-splitter-offline.html`. Open it by double-clicking. It is built without the visit counter and with `connect-src 'none'`, so the browser itself refuses every outgoing connection, even if you are online. To check, open DevTools → Network while you use it: nothing is requested.
 
 Downloaded file names:
 
@@ -81,7 +94,7 @@ Downloaded file names:
 
 - PDFs are read and written **only in your browser**, using [pdf-lib](https://github.com/Hopding/pdf-lib) and [PDF.js](https://github.com/mozilla/pdf.js), both bundled into the page. There is no upload and no server that receives files.
 - A strict `Content-Security-Policy` is set in the page: `default-src 'none'`, no remote fonts, images or scripts. The browser blocks any attempt to send data anywhere it is not allowed to.
-- **Visit counter.** The hosted site counts page visits anonymously with [GoatCounter](https://www.goatcounter.com/). It uses no cookies, is never given file names or file contents, and does nothing if your browser sends Do Not Track. This is the only network call the page makes, the CSP allows exactly that one host and nothing else, and the privacy notice on the page says so. A build without a counter contains no tracking code at all (see below).
+- **Visit counter.** The hosted site counts page visits anonymously with [GoatCounter](https://www.goatcounter.com/). It uses no cookies, is never given file names or file contents, and does nothing if your browser sends Do Not Track. This is the only network call the page makes, the CSP allows exactly that one host and nothing else, and the privacy notice on the page says so. A build without a counter contains no tracking code at all (see below). The **offline copy never contains the counter**, and `build.py` refuses to write it if any counter code slipped in.
 
 **Verify it yourself**
 
@@ -91,16 +104,16 @@ Downloaded file names:
 
 ## Build from source
 
-`index.html` is generated as a single self-contained file from `template.html` and the libraries in `vendor/`. You need Python 3 and nothing else.
+`build.py` generates two single self-contained files from `template.html` and the libraries in `vendor/`: `index.html` (the hosted page) and `pdf-splitter-offline.html` (what the download button hands out). You need Python 3 and nothing else.
 
 ```bash
 git clone https://github.com/AlungranPJ/pdf-splitter.git
 cd pdf-splitter
 
-python build.py                       # no tracking code at all
-python build.py --goatcounter mysite  # anonymous visit counter via mysite.goatcounter.com
+python build.py                       # no tracking code in either file
+python build.py --goatcounter mysite  # visit counter in index.html only, via mysite.goatcounter.com
 
-# then just open index.html in a browser
+# then just open index.html (or pdf-splitter-offline.html) in a browser
 ```
 
 `build.py` also writes the CSP. With the counter off, `connect-src` is `'none'`. With it on, the only additions are `gc.zgo.at` (the counter script) and your own `*.goatcounter.com` host.
@@ -118,7 +131,7 @@ The included workflow (`.github/workflows/pages.yml`) builds and publishes to Gi
 ```
 pdf-splitter/
 ├── template.html          UI, styles and app logic (placeholders for build-time parts)
-├── build.py               inlines vendor libs, writes the CSP, optionally adds the counter
+├── build.py               inlines vendor libs, writes the CSP, optionally adds the counter, writes the offline copy
 ├── vendor/                pdf-lib 1.17.1 and PDF.js 3.11.174 (+ their licenses)
 ├── docs/screenshots/      images used in this README
 ├── .github/workflows/     GitHub Pages deployment

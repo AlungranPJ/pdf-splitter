@@ -71,20 +71,26 @@
   h1 { margin:0; font-size:15px; font-weight:400; color:#0a1d31; letter-spacing:.1px;
     text-shadow:0 0 10px #fff, 0 0 5px #fff, 0 0 3px #fff; }
   .caps { margin-left:auto; align-self:flex-start; display:flex; margin-right:-3px; }
-  .caps span { display:grid; place-items:center; height:21px; border:1px solid var(--edge); border-top:0; margin-left:-1px; }
+  .caps button { position:relative; display:grid; place-items:center; height:21px; min-height:0; padding:0; margin:0 0 0 -1px; cursor:pointer; color:#1a2f45;
+    border:1px solid var(--edge); border-top:0; border-radius:0; box-shadow:none;
+    background:linear-gradient(rgba(255,255,255,.75) 0 48%, rgba(170,205,238,.75) 52%);
+    transition:background .15s ease, box-shadow .15s ease; }
   .caps svg { width:14px; height:14px; }
-  .caps .c1 { width:29px; border-radius:0 0 0 5px; background:linear-gradient(rgba(255,255,255,.75) 0 48%, rgba(170,205,238,.75) 52%); }
-  .caps .c2 { width:27px; background:linear-gradient(rgba(255,255,255,.75) 0 48%, rgba(170,205,238,.75) 52%); }
-  .caps .c3 { width:47px; border-radius:0 0 5px 0; background:linear-gradient(#efb2a6 0 48%, #c73f29 52%, #e0765a 100%); box-shadow:inset 0 0 0 1px rgba(255,255,255,.55); }
-  .caps button.c3 { display:grid; place-items:center; height:21px; min-height:0; padding:0; margin:0 0 0 -1px; cursor:pointer;
-    border:1px solid var(--edge); border-top:0; border-radius:0 0 5px 0;
-    background:linear-gradient(#efb2a6 0 48%, #c73f29 52%, #e0765a 100%); box-shadow:inset 0 0 0 1px rgba(255,255,255,.55); transition:filter .15s ease; }
-  .caps button.c3:hover:not(:disabled) { filter:brightness(1.14) saturate(1.15); background:linear-gradient(#f6c4ba 0 48%, #dc4a30 52%, #f08a6a 100%);
-    border-color:var(--edge); box-shadow:inset 0 0 0 1px rgba(255,255,255,.7), 0 2px 6px rgba(200,50,30,.55); }
-  .caps button.c3:active:not(:disabled) { filter:brightness(.88); background:linear-gradient(#c0442d 0 48%, #8f2714 52%, #b8452c 100%);
-    border-color:var(--edge); box-shadow:inset 0 1px 3px rgba(60,0,0,.5); }
-  .caps button.c3:focus-visible { outline-offset:-5px; }
-  .caps button.c3.nope svg { animation:nope .42s ease; }
+  .caps .iu, .caps .it { display:none; }
+  .caps .c1 { width:29px; border-radius:0 0 0 5px; }
+  .caps .c2 { width:27px; }
+  .caps .c3 { width:47px; border-radius:0 0 5px 0; box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);
+    background:linear-gradient(#efb2a6 0 48%, #c73f29 52%, #e0765a 100%); }
+  .caps button:hover:not(:disabled) { background:linear-gradient(#f7fcff 0 48%, #a9d7f4 52%, #cbe9fb 100%); border-color:var(--edge);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.8), 0 2px 6px rgba(40,120,200,.5); }
+  .caps button:active:not(:disabled) { background:linear-gradient(#8fc3e8 0 48%, #5a9fd3 52%, #78b6e2 100%); border-color:var(--edge);
+    box-shadow:inset 0 1px 3px rgba(0,40,80,.45); }
+  .caps .c3:hover:not(:disabled) { background:linear-gradient(#f6c4ba 0 48%, #dc4a30 52%, #f08a6a 100%);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.7), 0 2px 6px rgba(200,50,30,.55); }
+  .caps .c3:active:not(:disabled) { background:linear-gradient(#c0442d 0 48%, #8f2714 52%, #b8452c 100%);
+    box-shadow:inset 0 1px 3px rgba(60,0,0,.5); }
+  .caps button:focus-visible { outline-offset:-5px; }
+  .caps button.c3.nope :is(svg,.it) { animation:nope .42s ease; }
   @keyframes nope { 0%,100% { transform:translateX(0); } 20% { transform:translateX(-2.5px); } 40% { transform:translateX(2.5px); } 60% { transform:translateX(-2px); } 80% { transform:translateX(2px); } }
 
   /* ---------- Easter egg: the decorative close button points at the real one ---------- */
@@ -196,11 +202,218 @@
     .hills { height:22vh; }
     .sun { width:400px; height:400px; }
   }
+
+  /* ===================== Language indicator (Windows 7 language bar) ===================== */
+  .langbar { display:inline-flex; align-items:center; gap:6px; min-width:0; padding:4px 9px 4px 7px; color:#14283c; border-color:#5d7fa6;
+    background:linear-gradient(#ffffff 0 48%, #dbe8f6 52%, #c7dbef 100%); }
+  .langbar .kb { width:20px; height:14px; flex:none; }
+  .langbar .lcode { min-width:1.7em; text-align:center; font-weight:700; font-size:13.5px; letter-spacing:.5px; }
+  .langbar .dd { width:8px; height:5px; flex:none; opacity:.7; }
+
+  /* Alternate desktops are hidden until a theme is chosen with the window buttons */
+  .scene-ub, .ub-shell, .ascii { display:none; }
+
+  /* ===================== Theme: Ubuntu 22.04 (maximize button) ===================== */
+  html[data-theme="ubuntu"] { --ink:#2e3436; --ink2:#5d6366; --edge:#c3c0bb;
+    --font:"Ubuntu","Cantarell","Segoe UI","Leelawadee UI","Noto Sans Thai",system-ui,sans-serif;
+    background:#1b0a2a; scrollbar-color:#8a8580 #2a1236; }
+  html[data-theme="ubuntu"] ::selection { background:#e95420; color:#fff; }
+  html[data-theme="ubuntu"] a { color:#1a5fb4; }
+  html[data-theme="ubuntu"] :is(button,input,summary,.pg):focus-visible { outline:2px solid #e95420; outline-offset:2px; box-shadow:none; }
+  html[data-theme="ubuntu"] .scene { display:none; }
+  html[data-theme="ubuntu"] .scene-ub { display:block; position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; background:#0b0418; }
+  html[data-theme="ubuntu"] .scene-ub svg { display:block; width:100%; height:100%; }
+  html[data-theme="ubuntu"] .ub-shell { display:block; }
+  html[data-theme="ubuntu"] body { padding:27px 0 0 64px; }
+
+  .ub-panel { position:fixed; z-index:60; top:0; left:0; right:0; height:27px; display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+    padding:0 12px; background:#000; color:#fff; font-size:13.5px; font-weight:500; letter-spacing:.1px; }
+  .ub-panel .ub-clock { text-align:center; }
+  .ub-panel .ub-tray { justify-self:end; display:flex; align-items:center; gap:11px; }
+  .ub-panel .ub-tray svg { width:16px; height:16px; }
+  .ub-dock { position:fixed; z-index:55; left:0; top:27px; bottom:0; width:64px; padding:10px 0; display:flex; flex-direction:column; align-items:center; gap:9px;
+    background:rgba(32,16,38,.8); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border-right:1px solid rgba(255,255,255,.06); }
+  .ub-dock .app { position:relative; width:48px; height:48px; display:grid; place-items:center; border-radius:11px; }
+  .ub-dock .app svg { width:40px; height:40px; filter:drop-shadow(0 2px 3px rgba(0,0,0,.45)); }
+  .ub-dock .app.on { background:rgba(255,255,255,.1); }
+  .ub-dock .app.on::before { content:""; position:absolute; left:-8px; top:50%; width:6px; height:6px; margin-top:-3px; border-radius:50%; background:#e95420; }
+  .ub-dock .grow { flex:1; }
+
+  html[data-theme="ubuntu"] .win { max-width:940px; margin:30px auto 60px; padding:0; border:1px solid #b5b1ac; border-radius:12px; background:#fafaf8;
+    -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 0 0 1px rgba(0,0,0,.3), 0 18px 48px rgba(0,0,0,.6); }
+  html[data-theme="ubuntu"] .titlebar { position:relative; height:46px; gap:0; padding:0 12px 0 14px; border-radius:11px 11px 0 0;
+    background:linear-gradient(#f5f4f2, #e6e4e1); border-bottom:1px solid #c9c5c0; }
+  html[data-theme="ubuntu"] .titlebar svg.appico { display:none; }
+  html[data-theme="ubuntu"] h1 { position:absolute; left:0; right:0; text-align:center; font-size:15px; font-weight:700; color:#2e3436; text-shadow:none; pointer-events:none; }
+  html[data-theme="ubuntu"] .caps { align-self:center; margin:0 0 0 auto; gap:9px; position:relative; }
+  html[data-theme="ubuntu"] .caps button { width:26px; height:26px; margin:0; border:0; border-radius:50%; color:#2e3436; background:#dcd9d5; box-shadow:none; }
+  html[data-theme="ubuntu"] .caps button::after { content:none; }
+  html[data-theme="ubuntu"] .caps .c3 { color:#fff; background:#e95420; }
+  html[data-theme="ubuntu"] .caps button:hover:not(:disabled) { background:#cfcbc6; box-shadow:none; }
+  html[data-theme="ubuntu"] .caps .c3:hover:not(:disabled) { background:#f06535; box-shadow:none; }
+  html[data-theme="ubuntu"] .caps button:active:not(:disabled) { background:#bdb8b2; box-shadow:none; }
+  html[data-theme="ubuntu"] .caps .c3:active:not(:disabled) { background:#c7431b; box-shadow:none; }
+  html[data-theme="ubuntu"] .caps .ia, html[data-theme="ubuntu"] .caps .it { display:none; }
+  html[data-theme="ubuntu"] .caps .iu { display:block; width:16px; height:16px; }
+  html[data-theme="ubuntu"] .addr { padding:10px 14px 8px; background:#fafaf8; }
+  html[data-theme="ubuntu"] .abar { padding:2px 0; background:none; border:0; box-shadow:none; }
+  html[data-theme="ubuntu"] .abar svg { width:22px; height:22px; }
+  html[data-theme="ubuntu"] .client { background:#fafaf8; border:0; box-shadow:none; border-radius:0 0 11px 11px; }
+  html[data-theme="ubuntu"] .status { background:#efeeec; border-top:1px solid #d8d4cf; color:#5d6366; border-radius:0 0 11px 11px; }
+
+  html[data-theme="ubuntu"] button { color:#2e3436; border-radius:7px; border:1px solid #cdc8c3; border-bottom-color:#bdb6af; text-shadow:none;
+    background:linear-gradient(#fbfaf9, #ecebe9); box-shadow:0 1px 1px rgba(0,0,0,.08); }
+  html[data-theme="ubuntu"] button:hover:not(:disabled) { background:linear-gradient(#ffffff, #f2f0ee); border-color:#b5aea7; box-shadow:0 1px 3px rgba(0,0,0,.16); }
+  html[data-theme="ubuntu"] button:active:not(:disabled) { background:#dedad6; box-shadow:inset 0 1px 2px rgba(0,0,0,.22); }
+  html[data-theme="ubuntu"] button.primary { color:#fff; font-weight:600; background:#e95420; border-color:#c7431b; box-shadow:0 1px 2px rgba(120,40,10,.35); }
+  html[data-theme="ubuntu"] button.primary:hover:not(:disabled) { background:#f06535; border-color:#c7431b; box-shadow:0 2px 5px rgba(120,40,10,.4); }
+  html[data-theme="ubuntu"] button.primary:active:not(:disabled) { background:#c7431b; box-shadow:inset 0 1px 3px rgba(60,10,0,.4); }
+  html[data-theme="ubuntu"] button.alt { color:#fff; font-weight:600; background:#77216f; border-color:#5c1a56; box-shadow:0 1px 2px rgba(40,0,40,.35); }
+  html[data-theme="ubuntu"] button.alt:hover:not(:disabled) { background:#8b2b82; border-color:#5c1a56; box-shadow:0 2px 5px rgba(40,0,40,.4); }
+  html[data-theme="ubuntu"] button.alt:active:not(:disabled) { background:#5c1a56; box-shadow:inset 0 1px 3px rgba(20,0,20,.45); }
+  html[data-theme="ubuntu"] :is(button, button.primary, button.alt):disabled { color:#9b9792; background:#f1f0ee; border-color:#dcd8d3; box-shadow:none; }
+  html[data-theme="ubuntu"] .langbar { color:#2e3436; }
+
+  html[data-theme="ubuntu"] .privacy { border:1px solid #a5d2aa; border-radius:10px; color:#1f4a24; background:#eaf6eb; box-shadow:none; }
+  html[data-theme="ubuntu"] .privacy b { color:#14632a; }
+  html[data-theme="ubuntu"] .privacy .hint, html[data-theme="ubuntu"] .privacy details { color:#34573a; }
+  html[data-theme="ubuntu"] .privacy summary { color:#14632a; }
+  html[data-theme="ubuntu"] #drop { border:1px solid #dcd7d2; border-radius:12px; outline:2px dashed #cbc4bd; outline-offset:-10px; background:#fff; box-shadow:none; }
+  html[data-theme="ubuntu"] #drop.over { background:#fff4ef; outline-color:#e95420; box-shadow:none; }
+  html[data-theme="ubuntu"] .tools { background:#f5f4f2; border-top:1px solid #e6e3df; border-bottom:1px solid #d6d2cd; box-shadow:0 2px 4px rgba(0,0,0,.08); }
+  @media (min-width:700px) { html[data-theme="ubuntu"] .tools { top:27px; } }
+  html[data-theme="ubuntu"] .bar input[type=text] { color:#2e3436; background:#fff; border:1px solid #cdc8c3; border-radius:7px; box-shadow:inset 0 1px 1px rgba(0,0,0,.06); }
+  html[data-theme="ubuntu"] .bar input[type=text]:focus { border-color:#e95420; box-shadow:0 0 0 2px rgba(233,84,32,.28); outline:0; }
+  html[data-theme="ubuntu"] #msg { color:#14632a; }
+  html[data-theme="ubuntu"] .pg { border-radius:9px; }
+  html[data-theme="ubuntu"] .pg:hover { background:rgba(0,0,0,.05); border-color:transparent; box-shadow:none; }
+  html[data-theme="ubuntu"] .pg.sel { background:rgba(233,84,32,.14); border-color:#e95420; box-shadow:none; }
+  html[data-theme="ubuntu"] .pg canvas { border:1px solid #c9c5c0; box-shadow:0 2px 6px rgba(0,0,0,.25); }
+  html[data-theme="ubuntu"] .pg.sel .n { color:#b03a12; }
+  html[data-theme="ubuntu"] .pg .ck { display:none; }
+  html[data-theme="ubuntu"] .pg::after { content:""; position:absolute; top:15px; right:15px; width:24px; height:24px; border-radius:50%; opacity:0; transform:scale(.55);
+    background:#e95420 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 7.500l2.800 2.800L11 4.500' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 14px 14px no-repeat;
+    box-shadow:0 1px 3px rgba(0,0,0,.4); transition:opacity .16s ease, transform .16s cubic-bezier(.2,.9,.3,1.3); }
+  html[data-theme="ubuntu"] .pg.sel::after { opacity:1; transform:none; }
+  html[data-theme="ubuntu"] .oops-tip { color:#fff; background:#2b2b2b; border-color:#000; box-shadow:0 3px 10px rgba(0,0,0,.5); }
+  html[data-theme="ubuntu"] .oops-tip::before { background:#2b2b2b; border-left-color:#000; border-top-color:#000; }
+  @media (max-width:699px) {
+    html[data-theme="ubuntu"] body { padding-left:0; }
+    html[data-theme="ubuntu"] .ub-dock { display:none; }
+    html[data-theme="ubuntu"] .win { margin:10px 6px 60px; }
+    html[data-theme="ubuntu"] .titlebar { height:44px; }
+    html[data-theme="ubuntu"] h1 { font-size:14px; }
+  }
+
+  /* ===================== Theme: terminal / TUI (minimize button) ===================== */
+  html[data-theme="tui"] { --ink:#39ff6e; --ink2:#1fbf4a; --edge:#1fbf4a; color-scheme:dark;
+    --font:"Cascadia Mono","Cascadia Code",Consolas,"DejaVu Sans Mono","Leelawadee UI","Noto Sans Thai",monospace;
+    background:#000; scrollbar-color:#1fbf4a #000; }
+  html[data-theme="tui"] body { font-size:14px; line-height:1.55; }
+  html[data-theme="tui"] ::selection { background:#39ff6e; color:#000; }
+  html[data-theme="tui"] a { color:#39ff6e; text-decoration:underline; }
+  html[data-theme="tui"] :is(button,input,summary,.pg):focus-visible { outline:1px dashed #39ff6e; outline-offset:2px; box-shadow:none; }
+  html[data-theme="tui"] .scene { display:none; }
+  html[data-theme="tui"] .win { max-width:1040px; margin:18px auto 60px; padding:0; border:1px solid #1fbf4a; border-radius:0; background:#000;
+    -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:none; }
+  html[data-theme="tui"] .titlebar { height:auto; min-height:32px; gap:0; padding:2px 10px; border-bottom:1px solid #1fbf4a; }
+  html[data-theme="tui"] .titlebar svg.appico { display:none; }
+  html[data-theme="tui"] h1 { font-size:14px; font-weight:700; color:#39ff6e; text-shadow:none; letter-spacing:0; }
+  html[data-theme="tui"] h1::before { content:"> "; color:#1fbf4a; }
+  html[data-theme="tui"] h1::after { content:"_"; animation:tui-blink 1.1s steps(1) infinite; }
+  @keyframes tui-blink { 50% { opacity:0; } }
+  @media (prefers-reduced-motion:reduce) { html[data-theme="tui"] h1::after { animation:none; } }
+  html[data-theme="tui"] .caps { align-self:center; margin:0 0 0 auto; }
+  html[data-theme="tui"] .caps button { display:inline-flex; align-items:center; width:auto; height:auto; min-height:0; margin:0; padding:2px 1px; border:0; border-radius:0; font:inherit; color:#39ff6e; background:none; box-shadow:none; }
+  html[data-theme="tui"] .caps button::after { content:"]"; position:static; inset:auto; }
+  html[data-theme="tui"] .caps button::before { content:"["; }
+  html[data-theme="tui"] .caps button:hover:not(:disabled), html[data-theme="tui"] .caps button[aria-pressed="true"] { color:#000; background:#39ff6e; box-shadow:none; }
+  html[data-theme="tui"] .caps button:active:not(:disabled) { color:#000; background:#1fbf4a; box-shadow:none; }
+  html[data-theme="tui"] .caps .ia, html[data-theme="tui"] .caps .iu { display:none; }
+  html[data-theme="tui"] .caps .it { display:inline-block; padding:0 .35em; font-weight:700; }
+  html[data-theme="tui"] .addr { padding:6px 10px; }
+  html[data-theme="tui"] .abar { padding:0; background:none; border:0; box-shadow:none; }
+  html[data-theme="tui"] .abar svg { display:none; }
+  html[data-theme="tui"] .abar .hint { color:#1fbf4a; }
+  html[data-theme="tui"] .abar .hint::before { content:"# "; }
+  html[data-theme="tui"] .client { background:#000; border:0; box-shadow:none; border-radius:0; }
+  html[data-theme="tui"] .status { background:#000; border-top:1px solid #1fbf4a; color:#1fbf4a; }
+
+  html[data-theme="tui"] :is(button, button.primary, button.alt) { min-height:30px; padding:2px 2px; border:0; border-radius:0; font-weight:400; color:#39ff6e; text-shadow:none; background:none; box-shadow:none; }
+  html[data-theme="tui"] :is(button, button.primary, button.alt)::before { content:"[ "; white-space:pre; }
+  html[data-theme="tui"] :is(button, button.primary, button.alt)::after { content:" ]"; white-space:pre; }
+  html[data-theme="tui"] :is(button.primary, button.alt) { font-weight:700; }
+  html[data-theme="tui"] :is(button, button.primary, button.alt):hover:not(:disabled) { color:#000; background:#39ff6e; box-shadow:none; }
+  html[data-theme="tui"] :is(button, button.primary, button.alt):active:not(:disabled) { color:#000; background:#1fbf4a; box-shadow:none; }
+  html[data-theme="tui"] :is(button, button.primary, button.alt):disabled { color:#1f9a42; background:none; box-shadow:none; }
+  html[data-theme="tui"] button.big { min-height:40px; font-size:15px; padding:2px 2px; border-radius:0; }
+  html[data-theme="tui"] .langbar { color:#39ff6e; }
+  html[data-theme="tui"] .langbar svg { display:none; }
+  html[data-theme="tui"] .langbar .lcode { min-width:0; font-size:inherit; letter-spacing:0; }
+
+  html[data-theme="tui"] .privacy { display:block; margin:10px; padding:8px 12px; color:#39ff6e; border:1px solid #1fbf4a; border-radius:0; background:#000; box-shadow:none; }
+  html[data-theme="tui"] .privacy > svg { display:none; }
+  html[data-theme="tui"] .privacy b { color:#39ff6e; }
+  html[data-theme="tui"] .privacy b::before { content:"[ok] "; }
+  html[data-theme="tui"] .privacy .hint { margin-top:4px; color:#1fbf4a; }
+  html[data-theme="tui"] .privacy details { margin-top:4px; color:#39ff6e; font-size:13.5px; }
+  html[data-theme="tui"] .privacy summary { color:#39ff6e; }
+  html[data-theme="tui"] #drop { margin:0 10px 14px; border:1px dashed #1fbf4a; border-radius:0; outline:0; background:#000; box-shadow:none; }
+  html[data-theme="tui"] #drop.over { background:#04220d; border-color:#39ff6e; box-shadow:none; }
+  html[data-theme="tui"] #drop .big-ico { display:none; }
+  html[data-theme="tui"] #drop p { color:#1fbf4a; font-size:14px; }
+  html[data-theme="tui"] #drop .ascii { display:block; width:max-content; margin:0 auto 8px; font:inherit; line-height:1.15; color:#39ff6e; text-align:left; }
+  html[data-theme="tui"] .tools { background:#000; border-top:1px solid #1fbf4a; border-bottom:1px solid #1fbf4a; box-shadow:none; }
+  html[data-theme="tui"] .bar + .bar { border-top:1px dashed #0f6b27; }
+  html[data-theme="tui"] .bar b { color:#39ff6e; }
+  html[data-theme="tui"] .hint { color:#1fbf4a; }
+  html[data-theme="tui"] #msg { color:#39ff6e; }
+  html[data-theme="tui"] .bar input[type=text] { color:#39ff6e; background:#000; border:1px solid #1fbf4a; border-radius:0; box-shadow:none; caret-color:#39ff6e; }
+  html[data-theme="tui"] .bar input[type=text]::placeholder { color:#1f9a42; opacity:1; }
+  html[data-theme="tui"] .bar input[type=text]:focus { border-color:#39ff6e; box-shadow:none; outline:0; }
+  html[data-theme="tui"] .pg { border-radius:0; }
+  html[data-theme="tui"] .pg:hover { background:#04170a; border-color:#1fbf4a; box-shadow:none; }
+  html[data-theme="tui"] .pg.sel { background:#06290f; border-color:#39ff6e; box-shadow:none; }
+  html[data-theme="tui"] .pg canvas { background:#000; border:1px solid #1fbf4a; box-shadow:none; filter:url(#phos); }
+  html[data-theme="tui"] .pg .n { color:#39ff6e; }
+  html[data-theme="tui"] .pg.sel .n { font-weight:700; }
+  html[data-theme="tui"] .pg .ck { display:none; }
+  html[data-theme="tui"] .pg::before { content:"[ ]"; position:absolute; top:14px; left:14px; z-index:1; padding:0 4px; color:#39ff6e; background:#000; border:1px solid #1fbf4a; line-height:1.3; }
+  html[data-theme="tui"] .pg.sel::before { content:"[x]"; color:#000; background:#39ff6e; border-color:#39ff6e; font-weight:700; }
+  html[data-theme="tui"] .oops-tip { color:#39ff6e; background:#000; border:1px solid #39ff6e; border-radius:0; box-shadow:none; font-family:var(--font); font-weight:700; }
+  html[data-theme="tui"] .oops-tip::before { background:#000; border-left-color:#39ff6e; border-top-color:#39ff6e; }
+  @media (max-width:699px) {
+    html[data-theme="tui"] .win { margin:10px 8px 60px; }
+    html[data-theme="tui"] h1 { font-size:14px; }
+  }
+
+  /* ===================== Offline download button (bottom-left) ===================== */
+  .dl { position:fixed; z-index:30; left:14px; bottom:14px; display:inline-flex; align-items:center; gap:8px; padding:7px 13px 7px 10px;
+    font-size:13.5px; font-weight:600; color:#14283c; text-decoration:none; cursor:pointer;
+    border:1px solid #5d7fa6; border-radius:4px; background:linear-gradient(#ffffff 0 48%, #dbe8f6 52%, #c7dbef 100%);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.85), 0 3px 8px rgba(0,40,90,.4);
+    transition:background .15s ease, border-color .15s ease, box-shadow .15s ease; }
+  .dl:hover { background:linear-gradient(#eef8fe 0 48%, #d3ecfb 52%, #a9d9f5 100%); border-color:#2c7cb6;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.9), 0 3px 8px rgba(30,120,200,.5); }
+  .dl:active { background:linear-gradient(#c5e6f8 0 48%, #93cdee 52%, #7cc0e8 100%); box-shadow:inset 0 1px 3px rgba(0,50,90,.35); }
+  .dl svg { width:19px; height:19px; flex:none; }
+  html[data-theme="ubuntu"] .dl { left:78px; color:#2e3436; background:#fafaf8; border:1px solid #cdc8c3; border-radius:9px; box-shadow:0 3px 10px rgba(0,0,0,.5); }
+  html[data-theme="ubuntu"] .dl:hover { background:#fff; border-color:#e95420; box-shadow:0 3px 10px rgba(0,0,0,.55); }
+  html[data-theme="ubuntu"] .dl:active { background:#e9e6e2; box-shadow:inset 0 1px 3px rgba(0,0,0,.25); }
+  html[data-theme="tui"] .dl { color:#39ff6e; text-decoration:none; background:#000; border:1px solid #39ff6e; border-radius:0; box-shadow:none; font-weight:400; }
+  html[data-theme="tui"] .dl:hover { color:#000; background:#39ff6e; box-shadow:none; }
+  html[data-theme="tui"] .dl svg { display:none; }
+  html[data-theme="tui"] .dl::before { content:"[v]"; font-weight:700; }
+  @media (max-width:699px) {
+    .dl { left:8px; bottom:8px; min-height:40px; }
+    html[data-theme="ubuntu"] .dl { left:8px; }
+  }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
+    <filter id="phos" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feColorMatrix type="matrix" values="0 0 0 0 0  -.3 -.59 -.11 0 1.02  0 0 0 0 .05  0 0 0 1 0"/></filter>
     <symbol id="i-pdf" viewBox="0 0 64 64">
       <defs>
         <linearGradient id="gp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfe2f4"/></linearGradient>
@@ -260,19 +473,110 @@
   </svg>
 </div>
 
+<div class="scene-ub" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+  <defs>
+    <radialGradient id="jf-bg" cx="80%" cy="36%" r="80%"><stop offset="0" stop-color="#432080"/><stop offset=".42" stop-color="#1a0b3d"/><stop offset="1" stop-color="#060212"/></radialGradient>
+    <radialGradient id="jf-glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff5fa8" stop-opacity=".55"/><stop offset=".55" stop-color="#7a3cff" stop-opacity=".22"/><stop offset="1" stop-color="#7a3cff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="jf-bell" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb066"/><stop offset=".42" stop-color="#f2479a"/><stop offset="1" stop-color="#5b3bf0"/></linearGradient>
+    <linearGradient id="jf-rim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6ee7ff" stop-opacity=".0"/><stop offset=".5" stop-color="#ffffff" stop-opacity=".8"/><stop offset="1" stop-color="#6ee7ff" stop-opacity=".0"/></linearGradient>
+    <linearGradient id="jf-ten" gradientUnits="userSpaceOnUse" x1="0" y1="150" x2="0" y2="800"><stop offset="0" stop-color="#ff9ac6" stop-opacity=".95"/><stop offset=".5" stop-color="#b184ff" stop-opacity=".6"/><stop offset="1" stop-color="#6f8bff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="jf-arm" gradientUnits="userSpaceOnUse" x1="0" y1="140" x2="0" y2="480"><stop offset="0" stop-color="#ffb1d6"/><stop offset="1" stop-color="#8a5cff" stop-opacity="0"/></linearGradient>
+    <filter id="jf-blur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="16"/></filter>
+    <filter id="jf-soft"><feGaussianBlur stdDeviation="1.4"/></filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#jf-bg)"/>
+  <ellipse cx="1310" cy="330" rx="520" ry="430" fill="url(#jf-glow)"/>
+  <g fill="#cfe8ff"><circle cx="917" cy="542" r="1" opacity="0.34"/><circle cx="386" cy="414" r="5" opacity="0.09"/><circle cx="1567" cy="522" r="1" opacity="0.23"/><circle cx="599" cy="869" r="1" opacity="0.10"/><circle cx="968" cy="277" r="5" opacity="0.06"/><circle cx="1291" cy="458" r="1" opacity="0.25"/><circle cx="163" cy="455" r="3.4" opacity="0.08"/><circle cx="14" cy="397" r="5" opacity="0.09"/><circle cx="774" cy="147" r="2.4" opacity="0.15"/><circle cx="160" cy="334" r="1.8" opacity="0.15"/><circle cx="1143" cy="626" r="3.4" opacity="0.08"/><circle cx="711" cy="406" r="3.4" opacity="0.14"/><circle cx="515" cy="763" r="3.4" opacity="0.14"/><circle cx="81" cy="111" r="1" opacity="0.08"/><circle cx="848" cy="868" r="1.8" opacity="0.34"/><circle cx="537" cy="387" r="3.4" opacity="0.06"/><circle cx="1369" cy="873" r="1.4" opacity="0.10"/><circle cx="550" cy="504" r="1" opacity="0.38"/><circle cx="525" cy="359" r="1" opacity="0.46"/><circle cx="1104" cy="484" r="1" opacity="0.27"/><circle cx="1303" cy="11" r="3.4" opacity="0.09"/><circle cx="118" cy="557" r="5" opacity="0.10"/><circle cx="340" cy="99" r="2.4" opacity="0.41"/><circle cx="272" cy="254" r="3.4" opacity="0.06"/><circle cx="743" cy="182" r="1.8" opacity="0.43"/><circle cx="728" cy="149" r="1" opacity="0.50"/><circle cx="309" cy="380" r="3.4" opacity="0.14"/><circle cx="1010" cy="276" r="3.4" opacity="0.09"/><circle cx="431" cy="279" r="2.4" opacity="0.28"/><circle cx="355" cy="170" r="1.8" opacity="0.14"/><circle cx="1297" cy="697" r="5" opacity="0.15"/><circle cx="1180" cy="10" r="5" opacity="0.10"/><circle cx="981" cy="460" r="1" opacity="0.09"/><circle cx="240" cy="280" r="5" opacity="0.05"/><circle cx="788" cy="492" r="1" opacity="0.13"/><circle cx="365" cy="317" r="1.8" opacity="0.15"/><circle cx="414" cy="821" r="5" opacity="0.15"/><circle cx="770" cy="387" r="5" opacity="0.15"/><circle cx="218" cy="121" r="5" opacity="0.08"/><circle cx="375" cy="662" r="1.4" opacity="0.23"/><circle cx="1589" cy="554" r="3.4" opacity="0.08"/><circle cx="628" cy="819" r="1" opacity="0.35"/><circle cx="213" cy="287" r="1" opacity="0.48"/><circle cx="1491" cy="205" r="1" opacity="0.33"/><circle cx="1335" cy="264" r="1" opacity="0.26"/><circle cx="1230" cy="1" r="3.4" opacity="0.05"/><circle cx="1015" cy="555" r="5" opacity="0.10"/><circle cx="830" cy="123" r="2.4" opacity="0.40"/><circle cx="280" cy="238" r="1.4" opacity="0.15"/><circle cx="88" cy="487" r="1" opacity="0.42"/><circle cx="810" cy="329" r="1" opacity="0.20"/><circle cx="514" cy="876" r="1" opacity="0.29"/><circle cx="928" cy="22" r="1.4" opacity="0.48"/><circle cx="833" cy="348" r="1.4" opacity="0.26"/><circle cx="1334" cy="88" r="1" opacity="0.48"/><circle cx="973" cy="321" r="1" opacity="0.18"/><circle cx="1229" cy="85" r="1.4" opacity="0.10"/><circle cx="1162" cy="738" r="1.8" opacity="0.22"/><circle cx="426" cy="327" r="1" opacity="0.48"/><circle cx="541" cy="795" r="1.4" opacity="0.19"/><circle cx="116" cy="666" r="1.4" opacity="0.41"/><circle cx="660" cy="670" r="5" opacity="0.14"/><circle cx="157" cy="142" r="1" opacity="0.41"/><circle cx="376" cy="388" r="1" opacity="0.42"/><circle cx="747" cy="584" r="1.8" opacity="0.30"/><circle cx="1246" cy="79" r="1.4" opacity="0.48"/><circle cx="181" cy="268" r="1.4" opacity="0.47"/><circle cx="1282" cy="491" r="3.4" opacity="0.10"/><circle cx="487" cy="398" r="5" opacity="0.12"/><circle cx="633" cy="377" r="5" opacity="0.10"/><circle cx="796" cy="112" r="1.8" opacity="0.48"/><circle cx="1131" cy="513" r="1.4" opacity="0.49"/><circle cx="1162" cy="312" r="5" opacity="0.13"/><circle cx="1215" cy="32" r="3.4" opacity="0.15"/><circle cx="1253" cy="9" r="1" opacity="0.25"/><circle cx="747" cy="46" r="1" opacity="0.49"/><circle cx="571" cy="47" r="1.4" opacity="0.10"/><circle cx="142" cy="78" r="3.4" opacity="0.10"/><circle cx="950" cy="670" r="3.4" opacity="0.06"/><circle cx="1254" cy="117" r="1" opacity="0.33"/><circle cx="194" cy="485" r="1" opacity="0.44"/><circle cx="531" cy="870" r="3.4" opacity="0.06"/><circle cx="134" cy="640" r="5" opacity="0.07"/><circle cx="826" cy="490" r="3.4" opacity="0.13"/><circle cx="153" cy="148" r="1.4" opacity="0.16"/><circle cx="719" cy="723" r="2.4" opacity="0.25"/><circle cx="612" cy="266" r="2.4" opacity="0.25"/><circle cx="435" cy="280" r="1" opacity="0.10"/><circle cx="460" cy="69" r="1" opacity="0.34"/><circle cx="1478" cy="599" r="1" opacity="0.50"/></g>
+  <g transform="translate(1310 300) rotate(-16) scale(1.22)">
+    <g fill="none" stroke="url(#jf-ten)" stroke-linecap="round" filter="url(#jf-soft)">
+      <path d="M-183.4 150.0 C-183.9 154.8 -185.5 169.3 -186.1 179.0 C-186.7 188.6 -187.0 198.3 -187.0 208.0 C-186.9 217.6 -186.3 227.3 -185.6 236.9 C-184.9 246.6 -183.7 256.2 -182.9 265.9 C-182.2 275.6 -181.2 285.2 -181.0 294.9 C-180.9 304.5 -181.1 314.2 -182.1 323.9 C-183.1 333.5 -184.9 343.2 -186.9 352.8 C-189.0 362.5 -192.0 372.2 -194.4 381.8 C-196.9 391.5 -199.8 401.1 -201.7 410.8 C-203.5 420.5 -205.0 430.1 -205.3 439.8 C-205.7 449.4 -204.9 459.1 -203.6 468.7 C-202.2 478.4 -198.2 492.9 -197.1 497.7" stroke-width="2.2" opacity="0.39"/>
+      <path d="M-176.5 150.0 C-175.9 155.3 -175.9 171.0 -173.0 181.6 C-170.1 192.1 -163.3 202.6 -159.0 213.1 C-154.8 223.7 -148.5 234.2 -147.5 244.7 C-146.4 255.2 -149.4 265.7 -152.7 276.3 C-155.9 286.8 -164.6 297.3 -166.7 307.8 C-168.8 318.4 -169.5 328.9 -165.3 339.4 C-161.0 349.9 -148.7 360.4 -141.0 371.0 C-133.4 381.5 -121.7 392.0 -119.3 402.5 C-117.0 413.1 -121.5 423.6 -127.2 434.1 C-132.9 444.6 -148.4 455.1 -153.8 465.7 C-159.1 476.2 -163.7 486.7 -159.3 497.2 C-154.9 507.7 -132.9 523.5 -127.6 528.8" stroke-width="1.4" opacity="0.54"/>
+      <path d="M-165.8 150.0 C-165.1 154.4 -163.7 167.6 -161.8 176.4 C-159.9 185.2 -156.7 194.0 -154.3 202.7 C-151.9 211.5 -148.7 220.3 -147.2 229.1 C-145.8 237.9 -144.9 246.7 -145.6 255.5 C-146.4 264.3 -148.9 273.1 -152.0 281.9 C-155.0 290.7 -160.1 299.4 -163.8 308.2 C-167.5 317.0 -172.3 325.8 -174.4 334.6 C-176.5 343.4 -177.7 352.2 -176.3 361.0 C-175.0 369.8 -171.0 378.6 -166.2 387.4 C-161.5 396.1 -153.7 404.9 -147.6 413.7 C-141.5 422.5 -133.8 431.3 -129.7 440.1 C-125.6 448.9 -124.1 462.1 -123.0 466.5" stroke-width="1.7" opacity="0.43"/>
+      <path d="M-141.5 150.0 C-141.3 157.8 -139.3 181.3 -140.0 196.9 C-140.6 212.6 -143.9 228.2 -145.4 243.9 C-146.9 259.5 -149.8 275.1 -149.1 290.8 C-148.4 306.4 -145.6 322.1 -141.1 337.7 C-136.6 353.4 -128.0 369.0 -122.2 384.6 C-116.4 400.3 -108.7 415.9 -106.2 431.6 C-103.8 447.2 -104.4 462.9 -107.4 478.5 C-110.4 494.1 -119.2 509.8 -124.3 525.4 C-129.5 541.1 -137.3 556.7 -138.2 572.4 C-139.1 588.0 -136.1 603.6 -129.8 619.3 C-123.4 634.9 -109.7 650.6 -100.1 666.2 C-90.6 681.9 -77.1 705.3 -72.5 713.1" stroke-width="1.7" opacity="0.57"/>
+      <path d="M-147.1 150.0 C-147.8 157.9 -151.5 181.4 -151.1 197.1 C-150.7 212.8 -147.1 228.6 -144.8 244.3 C-142.5 260.0 -137.4 275.7 -137.2 291.4 C-136.9 307.1 -139.0 322.8 -143.3 338.5 C-147.6 354.2 -157.4 369.9 -162.9 385.7 C-168.4 401.4 -175.6 417.1 -176.3 432.8 C-177.0 448.5 -172.2 464.2 -167.2 479.9 C-162.1 495.6 -150.3 511.3 -146.0 527.1 C-141.8 542.8 -138.3 558.5 -141.8 574.2 C-145.2 589.9 -157.4 605.6 -166.6 621.3 C-175.8 637.0 -191.6 652.7 -196.8 668.4 C-202.0 684.2 -197.6 707.7 -197.8 715.6" stroke-width="1.8" opacity="0.37"/>
+      <path d="M-131.1 150.0 C-131.4 156.7 -132.0 176.7 -132.5 190.1 C-133.0 203.4 -134.1 216.8 -134.1 230.1 C-134.1 243.5 -133.7 256.8 -132.5 270.2 C-131.2 283.6 -128.7 296.9 -126.6 310.3 C-124.4 323.6 -121.3 337.0 -119.7 350.3 C-118.2 363.7 -117.0 377.1 -117.4 390.4 C-117.7 403.8 -119.7 417.1 -121.6 430.5 C-123.5 443.8 -127.0 457.2 -128.5 470.5 C-130.1 483.9 -131.6 497.3 -130.9 510.6 C-130.1 524.0 -127.3 537.3 -124.2 550.7 C-121.1 564.0 -115.5 577.4 -112.0 590.7 C-108.5 604.1 -104.8 624.1 -103.4 630.8" stroke-width="2.1" opacity="0.50"/>
+      <path d="M-115.5 150.0 C-116.2 155.6 -119.2 172.5 -120.0 183.7 C-120.9 194.9 -121.4 206.2 -120.6 217.4 C-119.7 228.6 -117.1 239.9 -115.0 251.1 C-112.9 262.4 -109.3 273.6 -108.2 284.8 C-107.0 296.1 -106.6 307.3 -108.2 318.5 C-109.8 329.8 -114.2 341.0 -117.7 352.2 C-121.3 363.5 -127.1 374.7 -129.5 385.9 C-131.9 397.2 -133.4 408.4 -132.1 419.7 C-130.8 430.9 -125.7 442.1 -121.5 453.4 C-117.3 464.6 -109.8 475.8 -106.7 487.1 C-103.6 498.3 -101.2 509.5 -102.7 520.8 C-104.2 532.0 -113.6 548.9 -115.8 554.5" stroke-width="1.7" opacity="0.43"/>
+      <path d="M-103.5 150.0 C-103.3 156.7 -102.8 176.6 -102.6 190.0 C-102.4 203.3 -102.9 216.6 -102.4 229.9 C-101.8 243.3 -101.1 256.6 -99.4 269.9 C-97.6 283.2 -94.7 296.5 -91.8 309.9 C-89.0 323.2 -84.9 336.5 -82.1 349.8 C-79.3 363.2 -76.3 376.5 -75.1 389.8 C-73.9 403.1 -74.0 416.4 -74.7 429.8 C-75.5 443.1 -78.1 456.4 -79.6 469.7 C-81.1 483.1 -83.5 496.4 -83.6 509.7 C-83.6 523.0 -82.7 536.3 -80.0 549.7 C-77.3 563.0 -72.2 576.3 -67.6 589.6 C-63.0 603.0 -54.9 622.9 -52.4 629.6" stroke-width="2.2" opacity="0.45"/>
+      <path d="M-92.9 150.0 C-93.7 156.6 -96.3 176.3 -97.6 189.5 C-99.0 202.7 -100.5 215.8 -100.9 229.0 C-101.4 242.2 -101.2 255.4 -100.4 268.5 C-99.5 281.7 -97.6 294.9 -95.8 308.0 C-94.1 321.2 -91.4 334.4 -89.9 347.5 C-88.4 360.7 -86.9 373.9 -86.9 387.0 C-87.0 400.2 -88.1 413.4 -90.3 426.5 C-92.5 439.7 -96.5 452.9 -100.2 466.1 C-103.9 479.2 -109.1 492.4 -112.7 505.6 C-116.3 518.7 -120.1 531.9 -121.7 545.1 C-123.2 558.2 -123.5 571.4 -122.0 584.6 C-120.5 597.7 -114.4 617.5 -112.9 624.1" stroke-width="1.1" opacity="0.64"/>
+      <path d="M-88.1 150.0 C-88.7 155.9 -91.5 173.4 -91.8 185.1 C-92.2 196.8 -91.1 208.5 -90.2 220.2 C-89.4 231.9 -87.0 243.7 -86.9 255.4 C-86.8 267.1 -87.5 278.8 -89.7 290.5 C-91.9 302.2 -96.9 313.9 -100.3 325.6 C-103.7 337.3 -108.6 349.0 -110.1 360.7 C-111.5 372.4 -110.8 384.1 -109.1 395.8 C-107.3 407.6 -101.7 419.3 -99.4 431.0 C-97.0 442.7 -93.8 454.4 -94.8 466.1 C-95.8 477.8 -100.6 489.5 -105.4 501.2 C-110.1 512.9 -119.2 524.6 -123.4 536.3 C-127.7 548.0 -129.6 565.6 -130.8 571.5" stroke-width="1.0" opacity="0.51"/>
+      <path d="M-74.7 150.0 C-74.2 154.4 -73.1 167.7 -71.6 176.5 C-70.2 185.3 -67.5 194.1 -66.1 203.0 C-64.7 211.8 -63.1 220.6 -63.3 229.4 C-63.5 238.3 -65.1 247.1 -67.3 255.9 C-69.5 264.7 -73.8 273.6 -76.5 282.4 C-79.2 291.2 -82.8 300.0 -83.6 308.9 C-84.5 317.7 -83.8 326.5 -81.6 335.3 C-79.3 344.2 -74.1 353.0 -70.0 361.8 C-66.0 370.6 -60.0 379.5 -57.4 388.3 C-54.8 397.1 -53.2 405.9 -54.6 414.8 C-56.0 423.6 -61.0 432.4 -65.8 441.2 C-70.6 450.1 -80.6 463.3 -83.5 467.7" stroke-width="2.0" opacity="0.65"/>
+      <path d="M-66.5 150.0 C-67.2 156.9 -70.9 177.7 -70.6 191.6 C-70.3 205.4 -67.4 219.3 -64.7 233.1 C-62.0 247.0 -56.1 260.8 -54.2 274.7 C-52.3 288.5 -51.0 302.4 -53.3 316.2 C-55.7 330.1 -62.8 344.0 -68.3 357.8 C-73.8 371.7 -83.1 385.5 -86.3 399.4 C-89.5 413.2 -90.4 427.1 -87.3 440.9 C-84.2 454.8 -74.1 468.6 -67.6 482.5 C-61.0 496.4 -50.4 510.2 -48.0 524.1 C-45.6 537.9 -47.4 551.8 -53.3 565.6 C-59.1 579.5 -73.8 593.3 -82.9 607.2 C-92.0 621.0 -103.5 641.8 -107.7 648.7" stroke-width="1.9" opacity="0.49"/>
+      <path d="M-51.9 150.0 C-52.5 158.0 -55.6 182.2 -55.9 198.2 C-56.3 214.3 -55.6 230.4 -54.1 246.5 C-52.7 262.5 -49.2 278.6 -47.2 294.7 C-45.2 310.8 -42.2 326.8 -42.0 342.9 C-41.9 359.0 -43.2 375.1 -46.1 391.1 C-49.0 407.2 -54.9 423.3 -59.3 439.4 C-63.7 455.4 -70.0 471.5 -72.5 487.6 C-75.1 503.7 -76.2 519.7 -74.4 535.8 C-72.7 551.9 -66.9 568.0 -62.1 584.0 C-57.3 600.1 -49.1 616.2 -45.5 632.3 C-41.9 648.4 -38.8 664.4 -40.3 680.5 C-41.8 696.6 -51.9 720.7 -54.2 728.7" stroke-width="2.1" opacity="0.33"/>
+      <path d="M-38.5 150.0 C-39.9 157.4 -44.0 179.7 -46.8 194.6 C-49.6 209.5 -54.0 224.3 -55.3 239.2 C-56.6 254.1 -55.8 269.0 -54.4 283.8 C-53.0 298.7 -48.1 313.6 -47.0 328.4 C-46.0 343.3 -45.3 358.2 -48.1 373.0 C-50.8 387.9 -58.5 402.8 -63.5 417.7 C-68.5 432.5 -76.4 447.4 -78.2 462.3 C-79.9 477.1 -77.6 492.0 -74.3 506.9 C-71.1 521.7 -61.6 536.6 -58.7 551.5 C-55.8 566.3 -53.7 581.2 -57.0 596.1 C-60.4 611.0 -71.6 625.8 -78.9 640.7 C-86.1 655.6 -97.0 677.9 -100.7 685.3" stroke-width="1.3" opacity="0.34"/>
+      <path d="M-29.2 150.0 C-30.4 155.4 -34.0 171.5 -36.5 182.2 C-39.1 193.0 -42.3 203.7 -44.4 214.4 C-46.5 225.2 -48.4 235.9 -49.0 246.7 C-49.5 257.4 -49.0 268.2 -47.6 278.9 C-46.2 289.6 -43.2 300.4 -40.6 311.1 C-38.0 321.9 -34.2 332.6 -32.0 343.3 C-29.8 354.1 -27.5 364.8 -27.5 375.6 C-27.5 386.3 -28.8 397.0 -31.9 407.8 C-35.0 418.5 -40.3 429.3 -45.9 440.0 C-51.5 450.8 -59.2 461.5 -65.2 472.2 C-71.3 483.0 -78.1 493.7 -82.0 504.5 C-85.9 515.2 -87.5 531.3 -88.6 536.7" stroke-width="1.2" opacity="0.42"/>
+      <path d="M-23.1 150.0 C-23.0 157.6 -23.4 180.5 -22.7 195.8 C-21.9 211.1 -19.5 226.4 -18.6 241.6 C-17.7 256.9 -16.3 272.2 -17.4 287.5 C-18.5 302.7 -21.1 318.0 -25.1 333.3 C-29.1 348.6 -35.9 363.8 -41.4 379.1 C-46.9 394.4 -54.2 409.7 -58.0 424.9 C-61.8 440.2 -64.7 455.5 -64.4 470.8 C-64.1 486.0 -60.2 501.3 -56.1 516.6 C-52.1 531.9 -44.3 547.1 -40.0 562.4 C-35.7 577.7 -30.6 592.9 -30.4 608.2 C-30.3 623.5 -33.3 638.8 -39.1 654.0 C-44.8 669.3 -60.8 692.2 -65.1 699.9" stroke-width="2.0" opacity="0.33"/>
+      <path d="M-4.0 150.0 C-4.4 156.5 -5.2 175.9 -6.9 188.9 C-8.7 201.8 -11.7 214.8 -14.2 227.8 C-16.7 240.7 -20.4 253.7 -22.2 266.6 C-24.0 279.6 -25.3 292.6 -25.1 305.5 C-24.8 318.5 -22.5 331.5 -20.5 344.4 C-18.4 357.4 -14.4 370.3 -12.8 383.3 C-11.1 396.3 -9.4 409.2 -10.4 422.2 C-11.4 435.1 -14.8 448.1 -18.9 461.1 C-22.9 474.0 -30.0 487.0 -34.8 499.9 C-39.5 512.9 -45.4 525.9 -47.4 538.8 C-49.5 551.8 -49.4 564.8 -47.2 577.7 C-45.0 590.7 -36.3 610.1 -34.1 616.6" stroke-width="1.9" opacity="0.58"/>
+      <path d="M5.5 150.0 C6.4 154.5 9.9 167.9 10.5 176.8 C11.1 185.8 11.0 194.7 9.4 203.7 C7.7 212.6 3.4 221.6 0.5 230.5 C-2.4 239.5 -7.0 248.4 -8.1 257.4 C-9.1 266.3 -8.4 275.3 -5.8 284.2 C-3.1 293.2 3.6 302.1 7.9 311.1 C12.3 320.0 18.8 329.0 20.3 337.9 C21.8 346.9 20.8 355.8 17.2 364.8 C13.6 373.7 4.6 382.7 -1.3 391.6 C-7.1 400.6 -15.6 409.5 -17.8 418.5 C-19.9 427.4 -18.6 436.4 -14.2 445.3 C-9.8 454.3 4.9 467.7 8.8 472.2" stroke-width="1.2" opacity="0.64"/>
+      <path d="M14.4 150.0 C14.6 154.4 15.0 167.5 15.8 176.2 C16.6 184.9 17.6 193.7 19.3 202.4 C21.0 211.1 23.4 219.9 26.1 228.6 C28.9 237.3 32.6 246.1 36.0 254.8 C39.4 263.5 43.5 272.3 46.7 281.0 C49.9 289.7 53.2 298.5 55.2 307.2 C57.2 315.9 58.5 324.6 58.8 333.4 C59.0 342.1 57.9 350.8 56.5 359.6 C55.1 368.3 52.3 377.0 50.1 385.8 C48.0 394.5 45.0 403.2 43.6 412.0 C42.2 420.7 40.9 429.4 41.5 438.2 C42.1 446.9 46.2 460.0 47.2 464.4" stroke-width="1.0" opacity="0.60"/>
+      <path d="M26.6 150.0 C26.6 155.3 26.3 171.1 26.9 181.6 C27.4 192.1 30.1 202.7 29.8 213.2 C29.5 223.8 28.3 234.3 25.0 244.8 C21.8 255.4 14.8 265.9 10.3 276.4 C5.8 287.0 -0.4 297.5 -2.0 308.1 C-3.6 318.6 -1.7 329.1 0.8 339.7 C3.3 350.2 10.7 360.7 12.9 371.3 C15.1 381.8 17.0 392.3 13.9 402.9 C10.9 413.4 1.6 424.0 -5.4 434.5 C-12.5 445.0 -24.2 455.6 -28.4 466.1 C-32.5 476.6 -33.2 487.2 -30.2 497.7 C-27.2 508.3 -13.8 524.1 -10.6 529.3" stroke-width="1.2" opacity="0.44"/>
+      <path d="M40.7 150.0 C40.7 157.2 41.0 178.8 40.7 193.1 C40.5 207.5 39.3 221.9 39.4 236.3 C39.5 250.7 39.7 265.0 41.3 279.4 C42.9 293.8 46.1 308.2 49.1 322.6 C52.1 336.9 56.6 351.3 59.3 365.7 C61.9 380.1 64.5 394.5 65.0 408.8 C65.4 423.2 63.8 437.6 62.0 452.0 C60.3 466.4 56.2 480.7 54.4 495.1 C52.7 509.5 50.7 523.9 51.6 538.3 C52.6 552.6 56.0 567.0 60.1 581.4 C64.3 595.8 71.7 610.2 76.5 624.5 C81.3 638.9 86.8 660.5 88.9 667.7" stroke-width="2.0" opacity="0.64"/>
+      <path d="M47.1 150.0 C47.5 155.1 47.8 170.2 49.3 180.3 C50.7 190.4 53.3 200.6 55.8 210.7 C58.3 220.8 62.1 230.9 64.3 241.0 C66.5 251.1 68.8 261.2 69.1 271.3 C69.5 281.5 68.2 291.6 66.7 301.7 C65.1 311.8 61.5 321.9 59.9 332.0 C58.3 342.1 56.3 352.2 57.0 362.4 C57.7 372.5 60.5 382.6 64.2 392.7 C67.9 402.8 74.6 412.9 79.3 423.0 C83.9 433.1 89.8 443.3 92.1 453.4 C94.3 463.5 94.6 473.6 92.8 483.7 C91.0 493.8 83.3 509.0 81.4 514.0" stroke-width="1.2" opacity="0.62"/>
+      <path d="M62.0 150.0 C61.3 155.1 58.4 170.3 57.6 180.4 C56.9 190.5 56.9 200.7 57.6 210.8 C58.2 220.9 60.2 231.1 61.4 241.2 C62.6 251.3 64.6 261.5 64.6 271.6 C64.7 281.7 63.9 291.9 61.7 302.0 C59.5 312.1 55.1 322.3 51.2 332.4 C47.2 342.5 41.4 352.6 37.9 362.8 C34.4 372.9 30.9 383.0 30.1 393.2 C29.3 403.3 30.7 413.4 33.2 423.6 C35.6 433.7 41.1 443.8 44.7 454.0 C48.3 464.1 53.5 474.2 54.9 484.4 C56.4 494.5 53.9 509.7 53.6 514.8" stroke-width="2.0" opacity="0.59"/>
+      <path d="M73.5 150.0 C73.7 154.4 75.7 167.6 75.0 176.4 C74.3 185.2 71.1 194.1 69.2 202.9 C67.3 211.7 63.7 220.5 63.6 229.3 C63.5 238.1 65.8 246.9 68.7 255.7 C71.5 264.5 78.3 273.4 80.7 282.2 C83.2 291.0 85.1 299.8 83.5 308.6 C81.8 317.4 74.9 326.2 70.9 335.0 C66.9 343.8 60.0 352.7 59.4 361.5 C58.8 370.3 62.6 379.1 67.2 387.9 C71.8 396.7 82.9 405.5 87.1 414.3 C91.3 423.2 94.7 432.0 92.5 440.8 C90.3 449.6 77.0 462.8 73.9 467.2" stroke-width="1.3" opacity="0.51"/>
+      <path d="M82.8 150.0 C83.2 157.0 83.2 178.0 85.4 192.0 C87.5 205.9 92.6 219.9 95.6 233.9 C98.7 247.9 103.2 261.9 103.8 275.9 C104.5 289.8 101.9 303.8 99.5 317.8 C97.1 331.8 90.7 345.8 89.4 359.8 C88.0 373.8 88.1 387.7 91.4 401.7 C94.8 415.7 104.2 429.7 109.7 443.7 C115.1 457.7 123.1 471.7 124.3 485.6 C125.5 499.6 121.3 513.6 116.8 527.6 C112.4 541.6 101.0 555.6 97.6 569.5 C94.2 583.5 92.3 597.5 96.2 611.5 C100.2 625.5 117.0 646.5 121.2 653.5" stroke-width="1.9" opacity="0.33"/>
+      <path d="M96.4 150.0 C96.9 154.6 98.6 168.5 99.4 177.8 C100.1 187.1 101.4 196.3 100.9 205.6 C100.3 214.9 98.0 224.1 96.0 233.4 C94.1 242.6 90.2 251.9 89.1 261.2 C87.9 270.4 87.8 279.7 89.1 289.0 C90.5 298.2 95.0 307.5 97.1 316.8 C99.3 326.0 102.4 335.3 101.9 344.6 C101.5 353.8 97.9 363.1 94.6 372.3 C91.3 381.6 84.5 390.9 82.2 400.1 C79.9 409.4 78.9 418.7 80.7 427.9 C82.6 437.2 89.4 446.5 93.1 455.7 C96.8 465.0 101.2 478.9 102.9 483.5" stroke-width="1.2" opacity="0.50"/>
+      <path d="M105.3 150.0 C106.4 157.7 110.0 180.6 112.3 196.0 C114.6 211.3 117.8 226.6 118.9 241.9 C120.0 257.2 119.8 272.6 118.7 287.9 C117.7 303.2 114.1 318.5 112.7 333.8 C111.2 349.2 108.9 364.5 109.9 379.8 C110.8 395.1 114.2 410.5 118.1 425.8 C122.0 441.1 129.3 456.4 133.2 471.7 C137.0 487.1 141.1 502.4 141.3 517.7 C141.5 533.0 137.8 548.3 134.3 563.7 C130.9 579.0 123.3 594.3 120.6 609.6 C117.9 624.9 115.8 640.3 118.1 655.6 C120.4 670.9 131.7 693.9 134.4 701.5" stroke-width="2.2" opacity="0.66"/>
+      <path d="M122.4 150.0 C121.2 155.7 118.1 172.7 115.3 184.1 C112.4 195.5 107.7 206.8 105.5 218.2 C103.3 229.6 101.8 240.9 101.9 252.3 C102.1 263.7 105.5 275.1 106.6 286.4 C107.7 297.8 110.1 309.2 108.8 320.5 C107.4 331.9 102.8 343.3 98.3 354.6 C93.7 366.0 85.3 377.4 81.6 388.7 C77.8 400.1 75.2 411.5 75.9 422.8 C76.7 434.2 82.9 445.6 86.1 456.9 C89.2 468.3 95.2 479.7 94.8 491.0 C94.4 502.4 89.6 513.8 83.8 525.2 C77.9 536.5 63.8 553.6 59.8 559.3" stroke-width="1.3" opacity="0.34"/>
+      <path d="M129.7 150.0 C128.7 154.7 126.0 168.6 124.1 177.9 C122.2 187.2 119.3 196.5 118.1 205.8 C117.0 215.2 116.3 224.5 117.1 233.8 C117.9 243.1 120.7 252.4 122.9 261.7 C125.2 271.0 129.2 280.3 130.7 289.6 C132.3 298.9 133.6 308.2 132.4 317.5 C131.2 326.8 127.4 336.2 123.5 345.5 C119.6 354.8 112.8 364.1 108.8 373.4 C104.8 382.7 100.3 392.0 99.4 401.3 C98.5 410.6 100.4 419.9 103.6 429.2 C106.9 438.5 114.1 447.8 118.9 457.2 C123.8 466.5 130.3 480.4 132.6 485.1" stroke-width="1.4" opacity="0.38"/>
+      <path d="M143.8 150.0 C145.2 155.6 149.8 172.5 152.0 183.7 C154.2 194.9 156.5 206.2 157.3 217.4 C158.1 228.6 157.6 239.8 156.6 251.1 C155.7 262.3 153.1 273.5 151.8 284.8 C150.6 296.0 148.6 307.2 149.1 318.5 C149.6 329.7 151.4 340.9 154.7 352.2 C158.1 363.4 164.0 374.6 169.2 385.8 C174.4 397.1 181.6 408.3 185.9 419.5 C190.2 430.8 194.1 442.0 194.8 453.2 C195.6 464.5 193.5 475.7 190.5 486.9 C187.5 498.2 180.9 509.4 176.9 520.6 C172.8 531.8 167.8 548.7 166.0 554.3" stroke-width="2.1" opacity="0.67"/>
+      <path d="M152.4 150.0 C153.5 155.2 157.0 170.8 159.0 181.2 C161.1 191.6 163.2 201.9 164.7 212.3 C166.1 222.7 167.1 233.1 167.7 243.5 C168.2 253.9 167.9 264.3 167.8 274.7 C167.6 285.0 166.7 295.4 166.6 305.8 C166.5 316.2 166.3 326.6 167.2 337.0 C168.1 347.4 169.6 357.8 172.1 368.2 C174.5 378.5 178.0 388.9 181.7 399.3 C185.3 409.7 190.1 420.1 194.0 430.5 C197.8 440.9 202.1 451.3 204.7 461.7 C207.4 472.0 209.5 482.4 210.1 492.8 C210.8 503.2 208.8 518.8 208.5 524.0" stroke-width="1.3" opacity="0.43"/>
+      <path d="M168.9 150.0 C168.4 154.7 167.5 168.8 166.1 178.2 C164.7 187.6 162.6 197.0 160.7 206.4 C158.8 215.8 156.3 225.2 154.7 234.6 C153.0 244.0 151.4 253.4 150.9 262.8 C150.4 272.2 150.7 281.7 151.8 291.1 C152.9 300.5 155.2 309.9 157.6 319.3 C159.9 328.7 163.4 338.1 165.9 347.5 C168.4 356.9 171.3 366.3 172.4 375.7 C173.6 385.1 174.1 394.5 173.0 403.9 C171.8 413.3 169.1 422.7 165.6 432.1 C162.1 441.5 156.8 450.9 152.2 460.3 C147.5 469.7 140.2 483.8 137.8 488.5" stroke-width="2.0" opacity="0.50"/>
+      <path d="M173.0 150.0 C173.8 156.9 175.6 177.7 177.7 191.5 C179.8 205.4 183.7 219.2 185.7 233.0 C187.6 246.9 189.7 260.7 189.4 274.5 C189.1 288.4 186.4 302.2 183.9 316.1 C181.5 329.9 176.5 343.7 174.8 357.6 C173.2 371.4 172.0 385.3 173.8 399.1 C175.7 412.9 181.3 426.8 186.0 440.6 C190.6 454.4 198.5 468.3 201.7 482.1 C205.0 496.0 207.0 509.8 205.4 523.6 C203.7 537.5 197.0 551.3 192.1 565.2 C187.1 579.0 178.3 592.8 175.5 606.7 C172.7 620.5 175.3 641.3 175.2 648.2" stroke-width="1.8" opacity="0.34"/>
+      <path d="M181.4 150.0 C181.1 155.5 180.0 172.1 180.0 183.1 C179.9 194.1 180.6 205.2 180.9 216.2 C181.2 227.2 182.1 238.3 181.8 249.3 C181.5 260.3 180.7 271.4 179.0 282.4 C177.4 293.4 174.5 304.5 171.9 315.5 C169.3 326.5 165.7 337.6 163.6 348.6 C161.5 359.7 159.6 370.7 159.3 381.7 C158.9 392.8 160.2 403.8 161.6 414.8 C163.1 425.9 166.3 436.9 167.9 447.9 C169.5 459.0 171.5 470.0 171.2 481.0 C171.0 492.1 169.2 503.1 166.3 514.1 C163.4 525.2 155.9 541.7 153.9 547.2" stroke-width="1.1" opacity="0.38"/>
+    </g>
+    <g fill="none" stroke="url(#jf-arm)" stroke-linecap="round" filter="url(#jf-soft)">
+      <path d="M-74.5 140.0 C-75.7 144.6 -80.5 158.5 -81.3 167.7 C-82.1 177.0 -81.2 186.2 -79.3 195.4 C-77.4 204.7 -72.3 213.9 -70.0 223.2 C-67.6 232.4 -64.4 241.7 -65.4 250.9 C-66.5 260.1 -70.8 269.4 -76.3 278.6 C-81.9 287.9 -92.3 297.1 -98.5 306.3 C-104.8 315.6 -112.4 324.8 -113.8 334.1 C-115.2 343.3 -112.1 352.5 -107.1 361.8 C-102.1 371.0 -90.4 380.3 -83.8 389.5 C-77.3 398.8 -70.6 412.6 -67.9 417.2" stroke-width="14.5" opacity="0.65"/>
+      <path d="M-28.5 140.0 C-28.2 144.3 -28.6 157.4 -26.9 166.0 C-25.2 174.7 -21.7 183.4 -18.3 192.1 C-15.0 200.7 -9.6 209.4 -6.9 218.1 C-4.3 226.8 -2.0 235.5 -2.5 244.1 C-3.0 252.8 -6.8 261.5 -10.0 270.2 C-13.2 278.8 -19.5 287.5 -21.6 296.2 C-23.8 304.9 -25.4 313.5 -23.0 322.2 C-20.6 330.9 -13.6 339.6 -7.2 348.3 C-0.8 356.9 10.0 365.6 15.5 374.3 C20.9 383.0 23.8 396.0 25.4 400.3" stroke-width="11.0" opacity="0.60"/>
+      <path d="M28.6 140.0 C28.1 144.8 26.9 159.0 25.9 168.6 C25.0 178.1 22.7 187.6 22.8 197.1 C23.0 206.7 24.1 216.2 26.8 225.7 C29.6 235.2 35.3 244.8 39.4 254.3 C43.6 263.8 49.6 273.3 51.8 282.9 C54.1 292.4 54.6 301.9 52.8 311.4 C50.9 321.0 44.8 330.5 40.7 340.0 C36.6 349.5 29.8 359.0 28.2 368.6 C26.6 378.1 27.1 387.6 31.1 397.1 C35.0 406.7 48.4 420.9 51.9 425.7" stroke-width="12.3" opacity="0.71"/>
+      <path d="M65.1 140.0 C65.4 144.3 65.0 157.1 66.9 165.6 C68.7 174.2 73.7 182.7 76.3 191.2 C78.9 199.8 82.9 208.3 82.5 216.9 C82.1 225.4 78.9 233.9 74.0 242.5 C69.1 251.0 59.3 259.6 53.3 268.1 C47.4 276.6 39.6 285.2 38.2 293.7 C36.8 302.3 39.7 310.8 45.1 319.3 C50.4 327.9 62.8 336.4 70.1 344.9 C77.4 353.5 87.5 362.0 89.1 370.6 C90.6 379.1 80.9 391.9 79.3 396.2" stroke-width="12.2" opacity="0.67"/>
+    </g>
+    <path d="M-214 150C-214 -44 -122 -154 0 -154C122 -154 214 -44 214 150C156 118 104 176 52 150C22 134 -22 176 -52 150C-104 176 -156 118 -214 150Z" fill="url(#jf-bell)" opacity=".26" filter="url(#jf-blur)"/>
+    <path d="M-208 148C-208 -40 -118 -148 0 -148C118 -148 208 -40 208 148C152 117 102 172 51 148C22 133 -22 172 -51 148C-102 172 -152 117 -208 148Z" fill="url(#jf-bell)" opacity=".86"/>
+    <path d="M-208 148C-152 117 -102 172 -51 148C-22 133 22 172 51 148C102 172 152 117 208 148" fill="none" stroke="url(#jf-rim)" stroke-width="3" opacity=".9"/>
+    <g fill="none" stroke="#fff" stroke-linecap="round">
+      <path d="M-150 120C-160 10 -96 -96 0 -110" stroke-width="2" opacity=".28"/>
+      <path d="M-95 110C-100 20 -60 -60 0 -70" stroke-width="2" opacity=".2"/>
+      <path d="M-40 120C-42 50 -26 -10 0 -28" stroke-width="2" opacity=".18"/>
+      <path d="M40 120C42 50 26 -10 0 -28" stroke-width="2" opacity=".18"/>
+      <path d="M95 110C100 20 60 -60 0 -70" stroke-width="2" opacity=".2"/>
+      <path d="M150 120C160 10 96 -96 0 -110" stroke-width="2" opacity=".28"/>
+    </g>
+    <ellipse cx="-58" cy="-92" rx="74" ry="34" fill="#fff" opacity=".2" transform="rotate(-24 -58 -92)"/>
+  </g>
+</svg></div>
+<div class="ub-shell" aria-hidden="true">
+  <div class="ub-panel">
+    <div>Activities</div>
+    <div class="ub-clock" id="ubClock"></div>
+    <div class="ub-tray">
+      <svg viewBox="0 0 16 16"><path d="M1.500 6.200a9.500 9.500 0 0 1 13 0M3.600 8.600a6.500 6.500 0 0 1 8.800 0M5.800 11a3.400 3.400 0 0 1 4.400 0" fill="none" stroke="#fff" stroke-width="1.400" stroke-linecap="round"/><circle cx="8" cy="13" r="1.100" fill="#fff"/></svg>
+      <svg viewBox="0 0 16 16"><path d="M2 6h3l4-3.500v11L5 10H2z" fill="#fff"/><path d="M11 5.500a3.600 3.600 0 0 1 0 5M12.800 3.800a6 6 0 0 1 0 8.400" fill="none" stroke="#fff" stroke-width="1.300" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 16 16"><rect x="1" y="4.500" width="12" height="7" rx="1.500" fill="none" stroke="#fff" stroke-width="1.300"/><rect x="2.600" y="6" width="7" height="4" fill="#fff"/><rect x="13.600" y="6.600" width="1.400" height="2.800" rx=".5" fill="#fff"/></svg>
+    </div>
+  </div>
+  <div class="ub-dock">
+    <div class="app"><svg viewBox="0 0 40 40"><rect x="3" y="8" width="34" height="26" rx="5" fill="#f5a623"/><path d="M3 13a5 5 0 0 1 5-5h9l3 4h12a5 5 0 0 1 5 5v2H3z" fill="#ffc857"/><rect x="3" y="15" width="34" height="19" rx="5" fill="#f0f0ee" opacity=".92"/></svg></div>
+    <div class="app"><svg viewBox="0 0 40 40"><rect x="3" y="4" width="34" height="32" rx="6" fill="#3d1a4f"/><path d="M10 14l7 6-7 6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 27h10" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></div>
+    <div class="app on"><svg viewBox="0 0 64 64"><use href="#i-pdf"/></svg></div>
+    <div class="app"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#77216f"/><circle cx="20" cy="20" r="6" fill="none" stroke="#fff" stroke-width="3"/><path d="M20 3v6M20 31v6M3 20h6M31 20h6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></div>
+    <div class="grow"></div>
+    <div class="app"><svg viewBox="0 0 40 40" fill="#fff"><circle cx="11" cy="11" r="2.800"/><circle cx="20" cy="11" r="2.800"/><circle cx="29" cy="11" r="2.800"/><circle cx="11" cy="20" r="2.800"/><circle cx="20" cy="20" r="2.800"/><circle cx="29" cy="20" r="2.800"/><circle cx="11" cy="29" r="2.800"/><circle cx="20" cy="29" r="2.800"/><circle cx="29" cy="29" r="2.800"/></svg></div>
+  </div>
+</div>
+
 <div class="win">
   <div class="titlebar">
     <svg class="appico" aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg>
     <h1>PDF Splitter</h1>
     <div class="caps">
-      <span class="c1" aria-hidden="true"><svg viewBox="0 0 14 14"><rect x="3" y="8" width="8" height="3" fill="#1a2f45"/></svg></span>
-      <span class="c2" aria-hidden="true"><svg viewBox="0 0 14 14"><rect x="2.500" y="2.500" width="9" height="8" fill="none" stroke="#1a2f45" stroke-width="1.600"/><rect x="2.500" y="2.500" width="9" height="2.600" fill="#1a2f45"/></svg></span>
-      <button id="bClose" type="button" class="c3"><svg viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M3 3l8 8M11 3l-8 8" stroke="#fff" stroke-width="2.400" stroke-linecap="round"/></svg></button>
+      <button id="bMin" type="button" class="c1" aria-pressed="false"><svg class="ia" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><rect x="3" y="8" width="8" height="3" fill="#1a2f45"/></svg><svg class="iu" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.500 11.500h9" stroke="currentColor" stroke-width="1.800" stroke-linecap="round"/></svg><span class="it" aria-hidden="true">_</span></button>
+      <button id="bMax" type="button" class="c2" aria-pressed="false"><svg class="ia" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><rect x="2.500" y="2.500" width="9" height="8" fill="none" stroke="#1a2f45" stroke-width="1.600"/><rect x="2.500" y="2.500" width="9" height="2.600" fill="#1a2f45"/></svg><svg class="iu" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="3.500" y="3.500" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.700" rx="1"/></svg><span class="it" aria-hidden="true">^</span></button>
+      <button id="bClose" type="button" class="c3"><svg class="ia" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M3 3l8 8M11 3l-8 8" stroke="#fff" stroke-width="2.400" stroke-linecap="round"/></svg><svg class="iu" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.800" stroke-linecap="round"/></svg><span class="it" aria-hidden="true">x</span></button>
     </div>
   </div>
   <div class="addr">
     <div class="abar"><svg aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg><span class="hint" data-i18n="tagline"></span></div>
-    <button id="lang" type="button" title="Language / ภาษา">EN</button>
+    <button id="lang" type="button" class="langbar" title="Language / ภาษา" aria-label="Language / ภาษา"><svg class="kb" viewBox="0 0 20 14" aria-hidden="true" focusable="false"><defs><linearGradient id="kbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7fafd"/><stop offset="1" stop-color="#9db5cf"/></linearGradient></defs><rect x=".5" y=".5" width="19" height="13" rx="2.200" fill="url(#kbg)" stroke="#4a6585"/><g fill="#33506f"><rect x="3" y="3" width="2" height="2"/><rect x="6" y="3" width="2" height="2"/><rect x="9" y="3" width="2" height="2"/><rect x="12" y="3" width="2" height="2"/><rect x="15" y="3" width="2" height="2"/><rect x="4.500" y="6.300" width="2" height="2"/><rect x="7.500" y="6.300" width="2" height="2"/><rect x="10.500" y="6.300" width="2" height="2"/><rect x="13.500" y="6.300" width="2" height="2"/><rect x="5" y="9.600" width="10" height="2"/></g></svg><span class="lcode" id="lcode">EN</span><svg class="dd" viewBox="0 0 8 5" aria-hidden="true" focusable="false"><path d="M0 0h8L4 5z" fill="currentColor"/></svg></button>
   </div>
 
 <main class="client">
@@ -293,6 +597,12 @@
 
   <div id="drop">
     <svg class="big-ico" aria-hidden="true" focusable="false"><use href="#i-pdf"/></svg>
+    <pre class="ascii" aria-hidden="true">+----------+
+| %PDF-1.7 |
+| ######## |
+| #####    |
+| #######  |
++----------+</pre>
     <p data-i18n="drop"></p>
     <button id="bChoose" type="button" class="primary big" data-i18n="choose"></button>
   </div>
@@ -327,6 +637,10 @@
 </main>
 </div>
 
+<!--DL-->
+<a id="dl" class="dl" href="pdf-splitter-offline.html" download="pdf-splitter-offline.html"><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><rect x="1.500" y="2.500" width="17" height="11" rx="1.500" fill="none" stroke="currentColor" stroke-width="1.500"/><path d="M7 17h6M10 13.500V17" stroke="currentColor" stroke-width="1.500" stroke-linecap="round"/><path d="M10 4.500v5.200M7.600 7.600L10 10l2.400-2.400" fill="none" stroke="#1d7d1d" stroke-width="1.700" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="dl"></span></a>
+<!--/DL-->
+
 <div id="oops" class="oops hide" aria-hidden="true">
   <svg id="oopsCur" class="oops-cur" viewBox="0 0 20 22" focusable="false"><path d="M1 1 L1 18 L5.400 13.900 L8.500 20.600 L11.300 19.300 L8.300 12.700 L14.400 12.500 Z" fill="#fff" stroke="#111" stroke-width="1.300" stroke-linejoin="round"/></svg>
   <div id="oopsTip" class="oops-tip" lang="en">lolz wrong button bro</div>
@@ -345,6 +659,9 @@
     th: {
       tagline: 'ตัดหน้า PDF ฟรี ทำงานในเครื่องคุณทั้งหมด',
       close: 'ปิด',
+      dl: 'ดาวน์โหลดไปใช้ออฟไลน์',
+      dl_tip: 'ไฟล์เดียว ไม่มีโค้ดนับผู้เข้าชม และบล็อกการเชื่อมต่อเน็ตทุกชนิด เปิดใช้ได้แม้ไม่ต่ออินเทอร์เน็ต',
+      m_tui: 'โหมดเทอร์มินัล (TUI)', m_ub: 'โหมด Ubuntu', m_back: 'กลับเป็นหน้าตา Windows 7',
       priv_head: 'ไฟล์ของคุณไม่ออกจากเครื่อง',
       priv_body: 'ทุกอย่างประมวลผลในเบราว์เซอร์ของคุณเท่านั้น ไม่มีการอัปโหลด ไม่มีเซิร์ฟเวอร์รับไฟล์ และไม่เก็บข้อมูลจากไฟล์ของคุณเด็ดขาด',
       priv_counter: 'สิ่งเดียวที่นับคือจำนวนผู้เข้าชมหน้านี้แบบไม่ระบุตัวตน (GoatCounter: ไม่ใช้ cookie ไม่เก็บ IP เต็ม ไม่เห็นชื่อไฟล์หรือเนื้อหาไฟล์) และจะไม่นับถ้าเบราว์เซอร์ของคุณเปิด Do Not Track',
@@ -370,6 +687,9 @@
     en: {
       tagline: 'Free PDF page splitter. Runs entirely on your device.',
       close: 'Close',
+      dl: 'Download offline copy',
+      dl_tip: 'One file, no visit counter, every network connection blocked. Works with the internet switched off.',
+      m_tui: 'Terminal mode (TUI)', m_ub: 'Ubuntu mode', m_back: 'Back to the Windows 7 look',
       priv_head: 'Your files never leave your device.',
       priv_body: 'Everything is processed inside your own browser. No upload, no server that receives files, and nothing from your files is ever stored.',
       priv_counter: 'The only thing counted is the number of visitors to this page, anonymously (GoatCounter: no cookies, no full IP stored, it never sees file names or contents). Nothing is counted if your browser sends Do Not Track.',
@@ -404,12 +724,41 @@
     document.querySelectorAll('[data-i18n]').forEach(e => e.textContent = t(e.dataset.i18n));
     document.querySelectorAll('[data-i18n-ph]').forEach(e => e.placeholder = t(e.dataset.i18nPh));
     $('privCounter').textContent = t(HAS_COUNTER ? 'priv_counter' : 'priv_nocounter');
-    $('lang').textContent = lang === 'th' ? 'EN' : 'ไทย';
+    $('lcode').textContent = lang.toUpperCase();
+    const dlEl = $('dl'); if (dlEl) dlEl.title = t('dl_tip');
+    labelCaps(); tickClock();
     $('bClose').setAttribute('aria-label', t('close'));
     if (total) { $('count').textContent = t('pages', total); cells.forEach((c, i) => c && (c.querySelector('.n').textContent = t('page', i))); }
     refresh(false);
   }
   $('lang').onclick = () => { lang = lang === 'th' ? 'en' : 'th'; applyLang(); };
+
+  // ---------- Themes: minimize = terminal (TUI), maximize = Ubuntu, press again to go back ----------
+  const themeColor = { aero: '#3a9be0', ubuntu: '#300a24', tui: '#000000' };
+  let theme = 'aero', clockTimer = 0;
+  function labelCaps() {
+    const a = $('bMin'), b = $('bMax');
+    const la = t(theme === 'tui' ? 'm_back' : 'm_tui'), lb = t(theme === 'ubuntu' ? 'm_back' : 'm_ub');
+    a.title = la; a.setAttribute('aria-label', la); b.title = lb; b.setAttribute('aria-label', lb);
+    a.setAttribute('aria-pressed', String(theme === 'tui')); b.setAttribute('aria-pressed', String(theme === 'ubuntu'));
+  }
+  function tickClock() {
+    clearTimeout(clockTimer);
+    if (theme !== 'ubuntu') return;
+    $('ubClock').textContent = new Date().toLocaleString(lang === 'th' ? 'th-TH' : 'en-GB',
+      { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    clockTimer = setTimeout(tickClock, 20000);
+  }
+  function setTheme(n) {
+    theme = themeColor[n] ? n : 'aero';
+    if (theme === 'aero') document.documentElement.removeAttribute('data-theme'); else document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor[theme]);
+    labelCaps(); tickClock();
+  }
+  $('bMin').onclick = () => setTheme(theme === 'tui' ? 'aero' : 'tui');
+  $('bMax').onclick = () => setTheme(theme === 'ubuntu' ? 'aero' : 'ubuntu');
+  setTheme(new URLSearchParams(location.search).get('theme'));
+
 
   // ---------- Easter egg: the fake close button points at the browser's real one ----------
   const oops = $('oops'), cur = $('oopsCur'), tip = $('oopsTip'), bClose = $('bClose');
